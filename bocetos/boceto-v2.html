@@ -208,15 +208,6 @@ main{overflow-x:clip}
 .par.tesis .gen{font-size:clamp(18px,2vw,24px)}
 .par.tesis .med{font-family:var(--f-display);font-weight:var(--d-peso);letter-spacing:-.02em;font-size:clamp(24px,3vw,36px);line-height:1.1}
 .par.tesis .med em{font-style:normal;color:var(--turquesa)}
-.detalles{margin-top:clamp(48px,7vw,80px);display:grid;gap:16px}
-.detalles-titulo{font:13px var(--f-mono);color:var(--suave);letter-spacing:.04em}
-.cinta{overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-.cinta-pista{display:flex;width:max-content;animation:cinta 48s linear infinite}
-.cinta:hover .cinta-pista{animation-play-state:paused}
-.cinta ul{display:flex;list-style:none;margin:0;padding:0}
-.cinta li{font:clamp(18px,2.2vw,26px)/1.3 var(--f-mono);color:var(--texto);white-space:nowrap;padding-right:34px;display:flex;align-items:center;gap:34px}
-.cinta li::after{content:"✦";color:var(--turquesa);font-size:.6em}
-@keyframes cinta{to{transform:translateX(-50%)}}
 
 /* Cómo trabajo */
 .linea-tiempo{position:relative;padding-left:30px;min-width:0}
@@ -329,9 +320,6 @@ main{overflow-x:clip}
   *,*::before,*::after{animation:none!important;transition:none!important}
   html{scroll-behavior:auto}
   .revela.abajo{transform:none}
-  .cinta-pista{width:auto}
-  .cinta ul{flex-wrap:wrap}
-  .cinta ul[aria-hidden]{display:none}
 }
 </style>
 
@@ -684,34 +672,6 @@ main{overflow-x:clip}
           <p class="gen"><span class="marca-gen" aria-hidden="true">✕</span><span>Si algo falla, escribís a un soporte que no conoce tu negocio.</span></p>
           <span class="va" aria-hidden="true">→</span>
           <p class="med"><span class="marca-med" aria-hidden="true">✓</span><span>Alguien de la zona te atiende cuando lo necesitás.</span></p>
-        </div>
-      </div>
-
-      <div class="detalles revela">
-        <p class="detalles-titulo">Cosas que una app genérica no tiene</p>
-        <div class="cinta">
-          <div class="cinta-pista">
-            <ul>
-              <li>El fiado con tus reglas</li>
-              <li>Recargo según cómo te pagan</li>
-              <li>La seña que se descuenta sola</li>
-              <li>Sigue vendiendo sin internet</li>
-              <li>Precio mayorista y minorista</li>
-              <li>La comisión de cada empleada como la arreglaste</li>
-              <li>Aviso cuando algo se está por terminar</li>
-              <li>Ticket por la comandera</li>
-            </ul>
-            <ul aria-hidden="true">
-              <li>El fiado con tus reglas</li>
-              <li>Recargo según cómo te pagan</li>
-              <li>La seña que se descuenta sola</li>
-              <li>Sigue vendiendo sin internet</li>
-              <li>Precio mayorista y minorista</li>
-              <li>La comisión de cada empleada como la arreglaste</li>
-              <li>Aviso cuando algo se está por terminar</li>
-              <li>Ticket por la comandera</li>
-            </ul>
-          </div>
         </div>
       </div>
     </div>
