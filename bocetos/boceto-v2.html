@@ -3,24 +3,7 @@
 <meta name="description" content="Sistemas, páginas web y automatizaciones a medida para comercios de zona oeste.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&family=Mona+Sans:wdth,wght@75..125,300..800&family=Fragment+Mono&family=Host+Grotesk:wght@300..700&family=Spline+Sans+Mono:wght@400;500&family=Funnel+Display:wght@400..700&family=Funnel+Sans:wght@400..600&family=Red+Hat+Display:wght@400..700&family=Red+Hat+Text:wght@400..600&family=Red+Hat+Mono:wght@400;500&family=Space+Grotesk:wght@400..700&family=Space+Mono:wght@400;700&family=Schibsted+Grotesk:wght@400..800&family=Azeret+Mono:wght@400;500&display=swap">
-<script>
-// Opciones del boceto (tipografía, botones, logo, puntos): se aplican antes de pintar para que no parpadee.
-(function(){
-  var d = document.documentElement;
-  var ops = {
-    tipo: ['geist','mona','host','funnel','redhat','space','schibsted'],
-    cta: ['burbuja','terminal','subrayado','tecla'],
-    logo: ['modulos','medida','terminal','nodos','robot','listo','actual'],
-    puntos: ['lima','robot','turquesa']
-  };
-  for (var k in ops) {
-    var v = null;
-    try { v = localStorage.getItem('vz-' + k); } catch (e) {}
-    d.setAttribute('data-' + k, ops[k].indexOf(v) >= 0 ? v : ops[k][0]);
-  }
-})();
-</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&family=Space+Mono:wght@400;700&display=swap">
 <style>
 /* Una columna en el celu; en escritorio, portada partida (texto | robot) y secciones anchas.
    El fondo vive en una capa fija (.ambiente) que cambia de tono según la sección que está en el centro de la pantalla. */
@@ -45,23 +28,14 @@
   --lavanda:#A78BFA;
   --nota:#FFC857;
 
-  /* tipografía: la cambia el panel del boceto */
-  --f-display:"Geist",system-ui,sans-serif;
-  --f-cuerpo:"Geist",system-ui,sans-serif;
-  --f-mono:"Geist Mono",ui-monospace,Menlo,monospace;
+  --f-display:"Space Grotesk",system-ui,sans-serif;
+  --f-cuerpo:"Space Grotesk",system-ui,sans-serif;
+  --f-mono:"Space Mono",ui-monospace,Menlo,monospace;
   --d-peso:600;
-  --d-track:-.045em;
-  --d-ancho:100%;
-  --d-escala:1;
+  --d-track:-.05em;
 
   --ancho:1180px;
 }
-html[data-tipo="mona"]{--f-display:"Mona Sans",system-ui,sans-serif;--f-cuerpo:"Mona Sans",system-ui,sans-serif;--f-mono:"Fragment Mono",ui-monospace,monospace;--d-peso:700;--d-track:-.035em;--d-ancho:112%;--d-escala:.92}
-html[data-tipo="host"]{--f-display:"Host Grotesk",system-ui,sans-serif;--f-cuerpo:"Host Grotesk",system-ui,sans-serif;--f-mono:"Spline Sans Mono",ui-monospace,monospace;--d-peso:600;--d-track:-.045em}
-html[data-tipo="funnel"]{--f-display:"Funnel Display",system-ui,sans-serif;--f-cuerpo:"Funnel Sans",system-ui,sans-serif;--f-mono:"Geist Mono",ui-monospace,monospace;--d-peso:600;--d-track:-.04em}
-html[data-tipo="redhat"]{--f-display:"Red Hat Display",system-ui,sans-serif;--f-cuerpo:"Red Hat Text",system-ui,sans-serif;--f-mono:"Red Hat Mono",ui-monospace,monospace;--d-peso:700;--d-track:-.035em}
-html[data-tipo="space"]{--f-display:"Space Grotesk",system-ui,sans-serif;--f-cuerpo:"Space Grotesk",system-ui,sans-serif;--f-mono:"Space Mono",ui-monospace,monospace;--d-peso:600;--d-track:-.05em}
-html[data-tipo="schibsted"]{--f-display:"Schibsted Grotesk",system-ui,sans-serif;--f-cuerpo:"Schibsted Grotesk",system-ui,sans-serif;--f-mono:"Azeret Mono",ui-monospace,monospace;--d-peso:700;--d-track:-.045em}
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:calc(76px + env(safe-area-inset-top,0px))}
@@ -69,7 +43,7 @@ body{margin:0;background:var(--negro);color:var(--texto);font-family:var(--f-cue
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--negro)}
 a{color:inherit}
 h1,h2,h3,p{margin:0}
-h1,h2,h3{font-family:var(--f-display);font-weight:var(--d-peso);font-stretch:var(--d-ancho);letter-spacing:var(--d-track);line-height:1;text-wrap:balance}
+h1,h2,h3{font-family:var(--f-display);font-weight:var(--d-peso);letter-spacing:var(--d-track);line-height:1;text-wrap:balance}
 :focus-visible{outline:2px solid var(--turquesa);outline-offset:4px;border-radius:8px}
 .mono{font-family:var(--f-mono)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
@@ -90,63 +64,23 @@ main{overflow-x:clip}
 .ambiente[data-tono="lavanda"]{--amb-fondo:#090B24;--amb-brillo:rgba(167,139,250,.19)}
 .ambiente[data-tono="turquesa"]{--amb-fondo:#04111A;--amb-brillo:rgba(94,234,212,.15)}
 
-/* Logo: cada marca es un ícono completo (fondo incluido) que el panel intercambia */
+/* Logo: ícono completo, fondo incluido */
 .logo{display:block;flex:none;border-radius:27.5%}
 
-/* ===== Llamadas a la acción: el estilo lo elige el panel (data-cta en <html>) ===== */
-.cta{text-decoration:none;color:var(--texto);max-width:100%;-webkit-tap-highlight-color:transparent}
-.cta > span{display:none}
-.c-ico svg{display:block}
-
-/* Burbuja: el botón es el mensaje que vas a mandar */
-[data-cta="burbuja"] .cta{display:inline-flex;align-items:flex-end;gap:10px}
-[data-cta="burbuja"] .c-msg{display:block;padding:12px 16px 8px;border-radius:20px 20px 6px 20px;background:color-mix(in srgb,var(--turquesa) 16%,#08141C);border:1px solid color-mix(in srgb,var(--turquesa) 32%,transparent);font-size:16px;line-height:1.4;max-width:30ch;transition:transform .25s ease, border-color .25s ease;min-width:0}
-[data-cta="burbuja"] .c-msg::after{content:"ahora ✓✓";display:block;text-align:right;font:11px var(--f-mono);color:var(--turquesa);margin-top:3px}
-[data-cta="burbuja"] .c-ico{display:grid;place-items:center;flex:none;width:48px;height:48px;border-radius:50%;background:var(--turquesa);color:var(--turquesa-osc);transition:transform .25s ease}
-[data-cta="burbuja"] .cta:hover .c-msg{transform:translateY(-2px);border-color:var(--turquesa)}
-[data-cta="burbuja"] .cta:hover .c-ico{transform:rotate(-14deg) scale(1.06)}
-[data-cta="burbuja"] .cta-sec .c-msg{background:rgba(255,255,255,.03);border-color:var(--linea);color:var(--suave)}
-[data-cta="burbuja"] .cta-sec .c-msg::after{color:var(--tenue)}
-[data-cta="burbuja"] .cta-sec .c-ico{background:transparent;border:1px solid var(--linea);color:var(--texto)}
-[data-cta="burbuja"] .cta-mini .c-msg{padding:8px 14px;font-size:14px;border-radius:16px 16px 4px 16px}
-[data-cta="burbuja"] .cta-mini .c-msg::after,[data-cta="burbuja"] .cta-mini .c-ico{display:none}
-
-/* Terminal: un comando que se "ejecuta" */
-[data-cta="terminal"] .cta{display:inline-flex;align-items:center;gap:10px;font:500 18px/1.3 var(--f-mono);padding:10px 2px}
-[data-cta="terminal"] .cta::before{content:"❯";color:var(--turquesa)}
-[data-cta="terminal"] .c-cmd{display:inline;padding:2px 5px;margin-left:-5px;border-radius:4px;transition:background .2s,color .2s}
-[data-cta="terminal"] .cta::after{content:"";width:.6em;height:1.15em;background:var(--turquesa);animation:titila 1s steps(1) infinite}
-[data-cta="terminal"] .cta:hover .c-cmd{background:var(--turquesa);color:var(--turquesa-osc)}
-[data-cta="terminal"] .cta-sec{color:var(--suave);font-size:16px}
-[data-cta="terminal"] .cta-sec::before{color:var(--tenue)}
-[data-cta="terminal"] .cta-sec::after,[data-cta="terminal"] .cta-mini::after{display:none}
-[data-cta="terminal"] .cta-mini{font-size:14px}
-
-/* Subrayado: texto grande con línea que se completa */
-[data-cta="subrayado"] .cta{display:inline-flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:var(--d-peso);font-stretch:var(--d-ancho);letter-spacing:-.02em;font-size:clamp(21px,2vw,27px);line-height:1.2;padding-bottom:8px;background:linear-gradient(var(--turquesa),var(--turquesa)) 0 100%/34% 2px no-repeat;transition:background-size .45s cubic-bezier(.2,.8,.2,1)}
-[data-cta="subrayado"] .c-texto,[data-cta="subrayado"] .c-flecha{display:inline}
-[data-cta="subrayado"] .c-flecha{color:var(--turquesa);transition:transform .3s ease}
-[data-cta="subrayado"] .cta:hover{background-size:100% 2px}
-[data-cta="subrayado"] .cta:hover .c-flecha{transform:translate(3px,-3px)}
-[data-cta="subrayado"] .cta-sec{color:var(--suave);font-size:clamp(17px,1.6vw,20px);background-image:linear-gradient(var(--tenue),var(--tenue))}
-[data-cta="subrayado"] .cta-mini{font:500 15px/1.2 var(--f-cuerpo);letter-spacing:0;padding-bottom:5px}
-
-/* Tecla: una tecla de teclado que se hunde al tocarla */
-[data-cta="tecla"] .cta{--k-cara:linear-gradient(#F2ECDF,#D9D1BE);--k-borde:#A39B86;--k-texto:#17140D;display:inline-flex;align-items:center;gap:18px;padding:15px 22px 16px;margin-bottom:6px;border-radius:12px;background:var(--k-cara);color:var(--k-texto);font:600 16px/1 var(--f-cuerpo);box-shadow:0 6px 0 var(--k-borde),0 14px 28px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.5);transition:transform .1s ease, box-shadow .1s ease}
-[data-cta="tecla"] .c-texto,[data-cta="tecla"] .c-tecla{display:inline}
-[data-cta="tecla"] .c-tecla{font:12px var(--f-mono);opacity:.55}
-[data-cta="tecla"] .cta:hover{transform:translateY(2px);box-shadow:0 4px 0 var(--k-borde),0 10px 22px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.5)}
-[data-cta="tecla"] .cta:active{transform:translateY(6px);box-shadow:0 0 0 var(--k-borde),0 4px 10px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.5)}
-[data-cta="tecla"] .cta-sec{--k-cara:linear-gradient(#2A3448,#1B2334);--k-borde:#0A0F1A;--k-texto:var(--texto)}
-[data-cta="tecla"] .cta-mini{padding:9px 14px 10px;font-size:14px;margin-bottom:4px}
-[data-cta="tecla"] .cta-mini .c-tecla{display:none}
+/* Llamadas a la acción: texto grande sin caja, con una línea que se completa al pasar */
+.cta{display:inline-flex;align-items:center;gap:10px;max-width:100%;color:var(--texto);text-decoration:none;font-family:var(--f-display);font-weight:var(--d-peso);letter-spacing:-.02em;font-size:clamp(21px,2vw,27px);line-height:1.2;padding-bottom:8px;background:linear-gradient(var(--turquesa),var(--turquesa)) 0 100%/34% 2px no-repeat;transition:background-size .45s cubic-bezier(.2,.8,.2,1)}
+.cta:hover{background-size:100% 2px}
+.c-flecha{color:var(--turquesa);transition:transform .3s ease}
+.cta:hover .c-flecha{transform:translate(3px,-3px)}
+.cta-sec{color:var(--suave);font-size:clamp(17px,1.6vw,20px);background-image:linear-gradient(var(--tenue),var(--tenue))}
+.cta-mini{font:500 15px/1.2 var(--f-cuerpo);letter-spacing:0;padding-bottom:5px}
 
 /* Barra */
 .barra{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;transition:background .3s ease, border-color .3s ease;border-bottom:1px solid transparent}
 .barra.con-fondo{background:rgba(5,10,20,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom-color:var(--linea)}
 .barra .envoltura{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:72px}
 .marca{display:flex;align-items:center;gap:10px;text-decoration:none}
-.marca b{font-family:var(--f-display);font-weight:var(--d-peso);font-stretch:var(--d-ancho);font-size:20px;letter-spacing:-.03em;line-height:1}
+.marca b{font-family:var(--f-display);font-weight:var(--d-peso);font-size:20px;letter-spacing:-.03em;line-height:1}
 .marca small{display:block;font-size:11.5px;color:var(--suave);letter-spacing:.02em;margin-top:3px}
 .menu{display:none;gap:28px;font-size:15px;color:var(--suave)}
 .menu a{text-decoration:none;transition:color .2s}
@@ -159,7 +93,7 @@ main{overflow-x:clip}
 .escena canvas{position:absolute;inset:0;width:100%;height:100%}
 .escena .robot{position:absolute;width:64%;left:18%;top:7%;overflow:visible}
 .portada-texto{display:grid;gap:26px;min-width:0}
-.titular{font-size:calc(clamp(46px,7vw,100px) * var(--d-escala));line-height:.98}
+.titular{font-size:clamp(46px,7vw,100px);line-height:.98}
 .titular .renglon{display:block}
 .acento{color:var(--turquesa)}
 .bajada{font-size:clamp(17px,1.6vw,20px);color:var(--suave);max-width:40ch}
@@ -197,7 +131,7 @@ main{overflow-x:clip}
 /* Secciones */
 .seccion{padding-block:clamp(80px,11vw,150px)}
 .cabecera{display:grid;gap:16px;margin-bottom:clamp(40px,6vw,72px);max-width:760px}
-.cabecera h2{font-size:calc(clamp(36px,5.2vw,68px) * var(--d-escala))}
+.cabecera h2{font-size:clamp(36px,5.2vw,68px)}
 .cabecera p{color:var(--suave);font-size:clamp(17px,1.5vw,19px);max-width:52ch}
 
 /* Servicios: mapa con nodo central y ramas */
@@ -206,6 +140,7 @@ main{overflow-x:clip}
 .nodo-chip{display:block;border-radius:27.5%;box-shadow:0 0 40px rgba(94,234,212,.35), 0 0 120px rgba(94,234,212,.16);flex:none}
 .nodo-chip .logo{width:56px;height:56px}
 .nodo-texto{font-size:14px;color:var(--suave)}
+.cursor-logo{animation:titila 1.1s steps(1) infinite}
 .nodo-texto b{color:var(--texto);font-weight:500}
 .nodo svg.ramas{display:none}
 .item{position:relative;margin-left:27px;padding:12px 0 18px 30px;min-width:0}
@@ -244,7 +179,7 @@ main{overflow-x:clip}
 .flecha:disabled{opacity:.3;cursor:default}
 .proyecto-texto{display:grid;gap:18px;align-content:start;min-width:0}
 .rubro{font:13px var(--f-mono);color:var(--tinte);letter-spacing:.04em;text-transform:uppercase}
-.proyecto h3{font-size:calc(clamp(34px,4vw,52px) * var(--d-escala))}
+.proyecto h3{font-size:clamp(34px,4vw,52px)}
 .estado{display:inline-flex;align-items:center;gap:10px;font:13px var(--f-mono);color:var(--suave)}
 .estado i{width:8px;height:8px;border-radius:50%;background:var(--tinte);animation:onda 2.2s ease-out infinite;color:var(--tinte)}
 @keyframes onda{0%{box-shadow:0 0 0 0 color-mix(in srgb, currentColor 60%, transparent)}70%,100%{box-shadow:0 0 0 9px transparent}}
@@ -266,7 +201,7 @@ main{overflow-x:clip}
 .par .marca-med{font:14px var(--f-mono);color:var(--turquesa);flex:none}
 .par .va{display:none}
 .par.tesis .gen{font-size:clamp(18px,2vw,24px)}
-.par.tesis .med{font-family:var(--f-display);font-weight:var(--d-peso);font-stretch:var(--d-ancho);letter-spacing:-.02em;font-size:calc(clamp(24px,3vw,36px) * var(--d-escala));line-height:1.1}
+.par.tesis .med{font-family:var(--f-display);font-weight:var(--d-peso);letter-spacing:-.02em;font-size:clamp(24px,3vw,36px);line-height:1.1}
 .par.tesis .med em{font-style:normal;color:var(--turquesa)}
 .detalles{margin-top:clamp(48px,7vw,80px);display:grid;gap:16px}
 .detalles-titulo{font:13px var(--f-mono);color:var(--suave);letter-spacing:.04em}
@@ -279,24 +214,22 @@ main{overflow-x:clip}
 @keyframes cinta{to{transform:translateX(-50%)}}
 
 /* Cómo trabajo */
-.proceso{display:grid;gap:40px}
-.proceso .cabecera{margin-bottom:0}
 .linea-tiempo{position:relative;padding-left:30px;min-width:0}
 .pista,.pista-llena{position:absolute;left:5px;top:10px;bottom:10px;width:2px;border-radius:2px;background:var(--linea)}
 .pista-llena{background:linear-gradient(var(--turquesa),#3B82F6);transform-origin:top;transform:scaleY(0);transition:transform .15s linear;box-shadow:0 0 14px rgba(94,234,212,.5)}
 .pasos{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(36px,5vw,56px) 22px}
 /* subgrid: todos los números comparten el ancho de columna y los títulos quedan alineados */
-.paso{grid-column:1/-1;display:grid;grid-template-columns:subgrid;align-items:start;position:relative}
+.paso{grid-column:1/-1;display:grid;grid-template-columns:subgrid;align-items:start;align-content:start;position:relative}
 .paso::before{content:"";position:absolute;left:-30px;top:clamp(20px,2.6vw,30px);width:12px;height:12px;border-radius:50%;background:var(--navy);border:2px solid var(--tenue);transition:background .4s, border-color .4s, box-shadow .4s}
 .paso.activo::before{background:var(--turquesa);border-color:var(--turquesa);box-shadow:0 0 0 6px rgba(94,234,212,.14)}
-.paso-num{font-family:var(--f-display);font-weight:700;font-stretch:var(--d-ancho);font-size:calc(clamp(56px,7vw,96px) * var(--d-escala));line-height:.85;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1.5px var(--tenue);transition:color .5s ease, -webkit-text-stroke-color .5s ease, text-shadow .5s ease}
+.paso-num{font-family:var(--f-display);font-weight:700;font-size:clamp(56px,7vw,96px);line-height:.85;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1.5px var(--tenue);transition:color .5s ease, -webkit-text-stroke-color .5s ease, text-shadow .5s ease}
 .paso.activo .paso-num{color:var(--turquesa);-webkit-text-stroke-color:var(--turquesa);text-shadow:0 0 40px rgba(94,234,212,.35)}
-.paso h3{font-size:calc(clamp(22px,2.2vw,28px) * var(--d-escala));letter-spacing:-.02em;line-height:1.15;padding-top:4px}
+.paso h3{font-size:clamp(22px,2.2vw,28px);letter-spacing:-.02em;line-height:1.15;padding-top:4px}
 .paso p{color:var(--suave);margin-top:8px;max-width:44ch}
 
 /* Contacto */
 .contacto{display:grid;gap:36px;align-items:center}
-.contacto h2{font-size:calc(clamp(40px,6vw,84px) * var(--d-escala))}
+.contacto h2{font-size:clamp(40px,6vw,84px)}
 .contacto-texto{display:grid;gap:28px;min-width:0}
 .contacto-texto > p{color:var(--suave);font-size:clamp(17px,1.5vw,20px);max-width:44ch}
 .canales{display:grid;justify-items:start;gap:16px}
@@ -316,7 +249,7 @@ main{overflow-x:clip}
 .pie-col a{color:var(--suave);text-decoration:none;font-size:15px;transition:color .2s}
 .pie-col a:hover{color:var(--texto)}
 .pie-gigante{overflow:hidden;height:calc(17.5vw * .62);user-select:none;pointer-events:none}
-.pie-gigante span{display:block;text-align:center;white-space:nowrap;font-family:var(--f-display);font-weight:var(--d-peso);font-stretch:var(--d-ancho);font-size:17.5vw;line-height:.8;letter-spacing:-.06em;color:transparent;background:linear-gradient(180deg, rgba(94,234,212,.32), rgba(94,234,212,0) 70%);-webkit-background-clip:text;background-clip:text}
+.pie-gigante span{display:block;text-align:center;white-space:nowrap;font-family:var(--f-display);font-weight:var(--d-peso);font-size:17.5vw;line-height:.8;letter-spacing:-.06em;color:transparent;background:linear-gradient(180deg, rgba(94,234,212,.32), rgba(94,234,212,0) 70%);-webkit-background-clip:text;background-clip:text}
 .pie-legal{border-top:1px solid var(--linea)}
 .pie-legal .envoltura{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;padding-block:20px 32px;font:12.5px var(--f-mono);color:var(--tenue)}
 .pie-legal a{text-decoration:none}
@@ -326,24 +259,6 @@ main{overflow-x:clip}
 .nota-boceto{display:inline-flex;align-items:center;gap:8px;font:12px/1.4 var(--f-mono);color:var(--nota);border:1px dashed rgba(255,200,87,.5);border-radius:8px;padding:6px 10px;background:rgba(255,200,87,.05);max-width:100%;justify-self:start;width:fit-content}
 .nota-boceto::before{content:"✎"}
 
-.panel-boceto{position:fixed;z-index:50;right:calc(14px + env(safe-area-inset-right,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px));font-family:"Geist",system-ui,sans-serif;max-width:calc(100vw - 28px)}
-.panel-boceto summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:999px;background:#FFC857;color:#1A1405;font:600 14px/1 "Geist",system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.45);margin-left:auto;width:fit-content}
-.panel-boceto summary::-webkit-details-marker{display:none}
-.panel-boceto[open] summary{margin-bottom:10px}
-.panel-cuerpo{width:min(380px,calc(100vw - 28px));background:#0E1420;border:1px solid rgba(255,200,87,.35);border-radius:18px;padding:16px;display:grid;gap:16px;box-shadow:0 20px 60px rgba(0,0,0,.55);color:#E8ECF2;max-height:min(72vh,640px);overflow:auto;overscroll-behavior:contain}
-.panel-cuerpo > p{font-size:12.5px;color:#9AABC2;line-height:1.45}
-.grupo{border:0;margin:0;padding:0;display:grid;gap:8px;min-width:0}
-.grupo legend{font:600 11px/1 "Geist Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:#FFC857;padding:0;margin-bottom:8px}
-.opciones{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
-.op{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;border:1px solid rgba(154,171,194,.16);cursor:pointer;transition:border-color .2s, background .2s;min-width:0;position:relative}
-.op:hover{border-color:rgba(255,200,87,.5)}
-.op:has(input:checked){border-color:#FFC857;background:rgba(255,200,87,.08)}
-.op:has(input:focus-visible){outline:2px solid #FFC857;outline-offset:2px}
-.op input{position:absolute;opacity:0;pointer-events:none}
-.op b{font-size:15px;font-weight:600;line-height:1.1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
-.op small{display:block;font:400 11px/1.3 "Geist",system-ui,sans-serif;color:#9AABC2;margin-top:2px}
-.op .logo{width:28px;height:28px}
-.op .muestra{width:16px;height:16px;border-radius:50%;flex:none}
 
 /* Aparición al scrollear: solo movimiento, el contenido está visible siempre */
 .revela{transition:transform .8s cubic-bezier(.2,.8,.2,1)}
@@ -390,8 +305,13 @@ main{overflow-x:clip}
   .item.extra .item-cmd{justify-content:center;font-size:clamp(19px,1.8vw,23px)}
   .item.extra .item-desc{padding-left:0;min-height:1.6em}
   .flecha-abajo{display:block;position:absolute;top:0;left:50%;width:14px;height:40px;margin-left:-7px;color:var(--turquesa)}
-  .proceso{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:64px;align-items:start}
-  .proceso .cabecera{position:sticky;top:calc(120px + env(safe-area-inset-top,0px))}
+  /* línea de tiempo horizontal: la pista va arriba y se llena de izquierda a derecha */
+  .linea-tiempo{padding-left:0;padding-top:48px}
+  .pista,.pista-llena{left:0;right:0;top:5px;bottom:auto;width:auto;height:2px}
+  .pista-llena{transform-origin:left;transform:scaleX(0)}
+  .pasos{grid-template-columns:repeat(4,minmax(0,1fr));gap:32px}
+  .paso{grid-column:auto;grid-template-columns:minmax(0,1fr);gap:18px}
+  .paso::before{left:0;top:-48px}
   .robot-chico{width:100%;max-width:280px}
 }
 @media (max-width:959px){ .item .punta{display:none} }
@@ -415,45 +335,10 @@ main{overflow-x:clip}
 <!-- Logos, pantallas ilustrativas e íconos, definidos una vez -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <!-- Logos (40×40, ícono completo) -->
-  <symbol id="logo-modulos" viewBox="0 0 40 40">
-    <rect x=".5" y=".5" width="39" height="39" rx="10.5" fill="#121417" stroke="#2A3340"/>
-    <rect x="3.8" y="10.4" width="6" height="6" rx="1.6" fill="#DDB35C"/>
-    <rect x="30.2" y="10.4" width="6" height="6" rx="1.6" fill="#86B6F2"/>
-    <rect x="10.4" y="17" width="6" height="6" rx="1.6" fill="#C9C6BA"/>
-    <rect x="23.6" y="17" width="6" height="6" rx="1.6" fill="#4FCDB4"/>
-    <rect x="17" y="23.6" width="6" height="6" rx="1.6" fill="#D4EE5E"/>
-  </symbol>
-  <symbol id="logo-medida" viewBox="0 0 40 40">
-    <rect x=".5" y=".5" width="39" height="39" rx="10.5" fill="#0C1A2C" stroke="#22344D"/>
-    <path d="M10.5 8.5h19M10.5 6.5v4M29.5 6.5v4" stroke="#D4EE5E" stroke-width="1.4" stroke-linecap="round"/>
-    <path d="M11 15l9 17 9-17" fill="none" stroke="#5EEAD4" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>
-  </symbol>
   <symbol id="logo-terminal" viewBox="0 0 40 40">
     <rect x=".5" y=".5" width="39" height="39" rx="10.5" fill="#0D1117" stroke="#2A3340"/>
     <path d="M9.5 14.5l5.5 11.5 5.5-11.5" fill="none" stroke="#5EEAD4" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
     <rect x="23.5" y="22.5" width="8" height="3.6" rx="1" fill="#D4EE5E"/>
-  </symbol>
-  <symbol id="logo-nodos" viewBox="0 0 40 40">
-    <rect x=".5" y=".5" width="39" height="39" rx="10.5" fill="#0C1A2C" stroke="#22344D"/>
-    <path d="M11 12l9 17 9-17" fill="none" stroke="#5EEAD4" stroke-width="2.2" stroke-linejoin="round"/>
-    <circle cx="11" cy="12" r="3.6" fill="#0C1A2C" stroke="#5EEAD4" stroke-width="2.2"/>
-    <circle cx="29" cy="12" r="3.6" fill="#0C1A2C" stroke="#5EEAD4" stroke-width="2.2"/>
-    <circle cx="20" cy="29" r="4.2" fill="#D4EE5E"/>
-  </symbol>
-  <symbol id="logo-robot" viewBox="0 0 40 40">
-    <rect width="40" height="40" rx="11" fill="#E4DDCB"/>
-    <rect x="7" y="11" width="26" height="12.5" rx="6.25" fill="#0B0B0C"/>
-    <circle cx="14.5" cy="17.25" r="2.7" fill="#D4EE5E"/>
-    <circle cx="25.5" cy="17.25" r="2.7" fill="#D4EE5E"/>
-    <path d="M16.5 28l3.5 4 3.5-4" fill="none" stroke="#2B2A28" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-  </symbol>
-  <symbol id="logo-listo" viewBox="0 0 40 40">
-    <rect width="40" height="40" rx="11" fill="#5EEAD4"/>
-    <path d="M10.5 16l7 13.5 12-19" fill="none" stroke="#04201C" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>
-  </symbol>
-  <symbol id="logo-actual" viewBox="0 0 40 40">
-    <rect width="40" height="40" rx="11" fill="#5EEAD4"/>
-    <path d="M12 12.5l8 15 8-15" fill="none" stroke="#04201C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
   </symbol>
 
   <!-- Pantallas ilustrativas; se pintan con el color de cada proyecto (--tinte) -->
@@ -531,17 +416,13 @@ main{overflow-x:clip}
     <g style="fill:#121F37"><rect x="52" y="210" width="92" height="26" rx="13"/><rect x="154" y="210" width="92" height="26" rx="13"/><rect x="256" y="210" width="92" height="26" rx="13"/></g>
   </symbol>
 
-  <!-- Íconos de las llamadas a la acción -->
-  <symbol id="ico-enviar" viewBox="0 0 24 24"><path d="M21 3 10.5 13.5M21 3l-6.5 18-4-7.5L3 9.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-  <symbol id="ico-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="m3 7 9 6 9-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-  <symbol id="ico-linkedin" viewBox="0 0 24 24"><path d="M6.5 9.5v8M6.5 6.5v.01M11 17.5v-8M11 13c0-2 1.3-3.5 3.2-3.5 1.9 0 2.8 1.3 2.8 3.5v4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 </svg>
 
 <header class="barra" id="barra">
   <div class="envoltura">
     <a class="marca" href="#inicio" aria-label="Vazzoler, inicio">
-      <svg class="logo" width="38" height="38" aria-hidden="true"><use class="logo-uso" href="#logo-modulos"/></svg>
-      <span><b>Vazzoler</b><small>soluciones digitales</small></span>
+      <svg class="logo" width="38" height="38" aria-hidden="true"><use href="#logo-terminal"/></svg>
+      <span><b>Vazzoler</b><small>Soluciones digitales</small></span>
     </a>
     <nav class="menu" aria-label="Secciones">
       <a href="#servicios">Servicios</a>
@@ -549,12 +430,7 @@ main{overflow-x:clip}
       <a href="#como-trabajo">Cómo trabajo</a>
       <a href="#contacto">Contacto</a>
     </nav>
-    <a class="cta cta-mini" href="https://wa.me/5491157979172?text=Hola%20Nico%2C%20quiero%20consultarte%20por%20mi%20negocio." target="_blank" rel="noopener" aria-label="Escribime por WhatsApp">
-      <span class="c-msg" aria-hidden="true">Escribime</span>
-      <span class="c-cmd" aria-hidden="true">escribime</span>
-      <span class="c-texto" aria-hidden="true">Escribime</span>
-      <span class="c-flecha" aria-hidden="true">↗</span>
-    </a>
+    <a class="cta cta-mini" href="https://wa.me/5491157979172?text=Hola%20Nico%2C%20quiero%20consultarte%20por%20mi%20negocio." target="_blank" rel="noopener" aria-label="Escribime por WhatsApp">Escribime <span class="c-flecha" aria-hidden="true">↗</span></a>
   </div>
 </header>
 
@@ -637,14 +513,7 @@ main{overflow-x:clip}
       </h1>
       <p class="bajada entra d3">Sistemas, páginas web y automatizaciones para comercios, hechos para la forma en que ya trabaja tu negocio.</p>
       <div class="acciones entra d4">
-        <a class="cta" href="https://wa.me/5491157979172?text=Hola%20Nico%2C%20quiero%20consultarte%20por%20mi%20negocio." target="_blank" rel="noopener" aria-label="Escribime por WhatsApp">
-          <span class="c-msg" aria-hidden="true">Hola Nico, quiero consultarte por mi negocio</span>
-          <span class="c-ico" aria-hidden="true"><svg width="20" height="20"><use href="#ico-enviar"/></svg></span>
-          <span class="c-cmd" aria-hidden="true">escribime --whatsapp</span>
-          <span class="c-texto" aria-hidden="true">Escribime por WhatsApp</span>
-          <span class="c-flecha" aria-hidden="true">↗</span>
-          <span class="c-tecla" aria-hidden="true">enter ↵</span>
-        </a>
+        <a class="cta" href="https://wa.me/5491157979172?text=Hola%20Nico%2C%20quiero%20consultarte%20por%20mi%20negocio." target="_blank" rel="noopener">Escribime por WhatsApp <span class="c-flecha" aria-hidden="true">↗</span></a>
         <a class="link-flecha" href="#trabajos">Ver trabajos <span aria-hidden="true">↓</span></a>
       </div>
       <p class="zona entra d4"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>Zona oeste</p>
@@ -664,8 +533,8 @@ main{overflow-x:clip}
             <path class="base" d="M0 50C60 50 50 150 100 150M0 150H100M0 250C60 250 50 150 100 150M200 50C140 50 150 150 100 150M200 150H100M200 250C140 250 150 150 100 150M100 150V300"/>
             <path class="flujo" d="M0 50C60 50 50 150 100 150M0 150H100M0 250C60 250 50 150 100 150M200 50C140 50 150 150 100 150M200 150H100M200 250C140 250 150 150 100 150M100 150V300"/>
           </svg>
-          <span class="nodo-chip"><svg class="logo" aria-hidden="true"><use class="logo-uso" href="#logo-modulos"/></svg></span>
-          <p class="nodo-texto mono"><b>vazzoler</b> ~ servicios</p>
+          <span class="nodo-chip"><svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><rect x=".5" y=".5" width="39" height="39" rx="10.5" fill="#0D1117" stroke="#2A3340"/><path d="M9.5 14.5l5.5 11.5 5.5-11.5" fill="none" stroke="#5EEAD4" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/><rect class="cursor-logo" x="23.5" y="22.5" width="8" height="3.6" rx="1" fill="#D4EE5E"/></svg></span>
+          <p class="nodo-texto mono"><b>Vazzoler</b> ~ servicios</p>
         </div>
         <div class="item izq f1"><span class="punta"></span><p class="item-cmd"><span class="prompt" aria-hidden="true">❯</span><span class="tipeo">Sistemas de gestión</span></p><p class="item-desc">Ventas, caja, stock y sueldos en una sola app</p></div>
         <div class="item izq f2"><span class="punta"></span><p class="item-cmd"><span class="prompt" aria-hidden="true">❯</span><span class="tipeo">Turnos y agenda</span></p><p class="item-desc">Reservas, señas y recordatorios sin cuaderno</p></div>
@@ -847,30 +716,9 @@ main{overflow-x:clip}
         <h2 id="t-contacto">Contame qué necesita <span class="acento">tu negocio.</span></h2>
         <p>Te respondo yo, Nicolás. Si te queda cómodo, paso por tu local y lo vemos ahí.</p>
         <div class="canales">
-          <a class="cta" href="https://wa.me/5491157979172?text=Hola%20Nico%2C%20quiero%20consultarte%20por%20mi%20negocio." target="_blank" rel="noopener" aria-label="Escribime por WhatsApp">
-            <span class="c-msg" aria-hidden="true">Hola Nico, quiero consultarte por mi negocio</span>
-            <span class="c-ico" aria-hidden="true"><svg width="20" height="20"><use href="#ico-enviar"/></svg></span>
-            <span class="c-cmd" aria-hidden="true">escribime --whatsapp</span>
-            <span class="c-texto" aria-hidden="true">Escribime por WhatsApp</span>
-            <span class="c-flecha" aria-hidden="true">↗</span>
-            <span class="c-tecla" aria-hidden="true">enter ↵</span>
-          </a>
-          <a class="cta cta-sec" href="mailto:nicovazzoler99@gmail.com?subject=Consulta%20desde%20la%20web" aria-label="Mandame un mail">
-            <span class="c-msg" aria-hidden="true">Prefiero escribirte por mail</span>
-            <span class="c-ico" aria-hidden="true"><svg width="19" height="19"><use href="#ico-mail"/></svg></span>
-            <span class="c-cmd" aria-hidden="true">escribime --mail</span>
-            <span class="c-texto" aria-hidden="true">Mandame un mail</span>
-            <span class="c-flecha" aria-hidden="true">↗</span>
-            <span class="c-tecla" aria-hidden="true">enter ↵</span>
-          </a>
-          <a class="cta cta-sec" href="https://www.linkedin.com/in/nicovazzoler/" target="_blank" rel="noopener" aria-label="Mi perfil de LinkedIn">
-            <span class="c-msg" aria-hidden="true">Te busco en LinkedIn</span>
-            <span class="c-ico" aria-hidden="true"><svg width="19" height="19"><use href="#ico-linkedin"/></svg></span>
-            <span class="c-cmd" aria-hidden="true">abrir --linkedin</span>
-            <span class="c-texto" aria-hidden="true">Mi LinkedIn</span>
-            <span class="c-flecha" aria-hidden="true">↗</span>
-            <span class="c-tecla" aria-hidden="true">enter ↵</span>
-          </a>
+          <a class="cta" href="https://wa.me/5491157979172?text=Hola%20Nico%2C%20quiero%20consultarte%20por%20mi%20negocio." target="_blank" rel="noopener">Escribime por WhatsApp <span class="c-flecha" aria-hidden="true">↗</span></a>
+          <a class="cta cta-sec" href="mailto:nicovazzoler99@gmail.com?subject=Consulta%20desde%20la%20web">Mandame un mail <span class="c-flecha" aria-hidden="true">↗</span></a>
+          <a class="cta cta-sec" href="https://www.linkedin.com/in/nicovazzoler/" target="_blank" rel="noopener">Mi LinkedIn <span class="c-flecha" aria-hidden="true">↗</span></a>
         </div>
         <span class="nota-boceto">Dentro del boceto el mail puede no abrirse; en la página real sí</span>
       </div>
@@ -883,8 +731,8 @@ main{overflow-x:clip}
   <div class="envoltura pie">
     <div class="pie-marca">
       <a class="marca" href="#inicio" aria-label="Vazzoler, volver al inicio">
-        <svg class="logo" width="38" height="38" aria-hidden="true"><use class="logo-uso" href="#logo-modulos"/></svg>
-        <span><b>Vazzoler</b><small>soluciones digitales</small></span>
+        <svg class="logo" width="38" height="38" aria-hidden="true"><use href="#logo-terminal"/></svg>
+        <span><b>Vazzoler</b><small>Soluciones digitales</small></span>
       </a>
       <p>Sistemas, páginas web y automatizaciones a medida para comercios de zona oeste.</p>
       <p class="disponible"><i></i>Tomando proyectos nuevos</p>
@@ -909,7 +757,7 @@ main{overflow-x:clip}
       </div>
     </div>
   </div>
-  <div class="pie-gigante" aria-hidden="true"><span>vazzoler</span></div>
+  <div class="pie-gigante" aria-hidden="true"><span>Vazzoler</span></div>
   <div class="pie-legal">
     <div class="envoltura">
       <span>© 2026 Nicolás Vazzoler</span>
@@ -919,71 +767,9 @@ main{overflow-x:clip}
   </div>
 </footer>
 
-<details class="panel-boceto" id="panel-boceto">
-  <summary><span aria-hidden="true">✎</span> Opciones del boceto</summary>
-  <div class="panel-cuerpo">
-    <p>No va en la página final. Probá combinaciones: este navegador las recuerda.</p>
-    <fieldset class="grupo"><legend>Tipografía</legend>
-      <div class="opciones">
-        <label class="op"><input type="radio" name="tipo" value="geist"><b style="font-family:'Geist'">Geist<small>La elegida</small></b></label>
-        <label class="op"><input type="radio" name="tipo" value="mona"><b style="font-family:'Mona Sans';font-stretch:112%">Mona Sans<small>Ancha y sólida</small></b></label>
-        <label class="op"><input type="radio" name="tipo" value="host"><b style="font-family:'Host Grotesk'">Host Grotesk<small>Tranquila, prolija</small></b></label>
-        <label class="op"><input type="radio" name="tipo" value="funnel"><b style="font-family:'Funnel Display'">Funnel<small>Moderna, con detalles</small></b></label>
-        <label class="op"><input type="radio" name="tipo" value="redhat"><b style="font-family:'Red Hat Display'">Red Hat<small>Amigable, con su mono</small></b></label>
-        <label class="op"><input type="radio" name="tipo" value="space"><b style="font-family:'Space Grotesk'">Space<small>Técnica, algo retro</small></b></label>
-        <label class="op"><input type="radio" name="tipo" value="schibsted"><b style="font-family:'Schibsted Grotesk'">Schibsted<small>Firme, de diario</small></b></label>
-      </div>
-    </fieldset>
-    <fieldset class="grupo"><legend>Botones</legend>
-      <div class="opciones">
-        <label class="op"><input type="radio" name="cta" value="burbuja"><b>Burbuja<small>El mensaje que mandás</small></b></label>
-        <label class="op"><input type="radio" name="cta" value="terminal"><b>Terminal<small>Un comando</small></b></label>
-        <label class="op"><input type="radio" name="cta" value="subrayado"><b>Subrayado<small>Texto grande, sin caja</small></b></label>
-        <label class="op"><input type="radio" name="cta" value="tecla"><b>Tecla<small>Se hunde al tocarla</small></b></label>
-      </div>
-    </fieldset>
-    <fieldset class="grupo"><legend>Logo</legend>
-      <div class="opciones">
-        <label class="op"><input type="radio" name="logo" value="modulos"><svg class="logo" aria-hidden="true"><use href="#logo-modulos"/></svg><b>Módulos<small>Colores del robot</small></b></label>
-        <label class="op"><input type="radio" name="logo" value="medida"><svg class="logo" aria-hidden="true"><use href="#logo-medida"/></svg><b>A medida<small>V con cota</small></b></label>
-        <label class="op"><input type="radio" name="logo" value="terminal"><svg class="logo" aria-hidden="true"><use href="#logo-terminal"/></svg><b>Terminal<small>v con cursor</small></b></label>
-        <label class="op"><input type="radio" name="logo" value="nodos"><svg class="logo" aria-hidden="true"><use href="#logo-nodos"/></svg><b>Nodos<small>V conectada</small></b></label>
-        <label class="op"><input type="radio" name="logo" value="robot"><svg class="logo" aria-hidden="true"><use href="#logo-robot"/></svg><b>Robot<small>La V es la sonrisa</small></b></label>
-        <label class="op"><input type="radio" name="logo" value="listo"><svg class="logo" aria-hidden="true"><use href="#logo-listo"/></svg><b>Listo<small>V que es un tilde</small></b></label>
-        <label class="op"><input type="radio" name="logo" value="actual"><svg class="logo" aria-hidden="true"><use href="#logo-actual"/></svg><b>Actual<small>Para comparar</small></b></label>
-      </div>
-    </fieldset>
-    <fieldset class="grupo"><legend>Puntos del fondo</legend>
-      <div class="opciones">
-        <label class="op"><input type="radio" name="puntos" value="lima"><span class="muestra" style="background:#D4EE5E"></span><b>Lima<small>Como los ojos</small></b></label>
-        <label class="op"><input type="radio" name="puntos" value="robot"><span class="muestra" style="background:conic-gradient(#DDB35C 0 25%,#86B6F2 0 50%,#4FCDB4 0 75%,#C9C6BA 0)"></span><b>Robot<small>Sus cuatro colores</small></b></label>
-        <label class="op"><input type="radio" name="puntos" value="turquesa"><span class="muestra" style="background:#5EEAD4"></span><b>Turquesa<small>Como antes</small></b></label>
-      </div>
-    </fieldset>
-  </div>
-</details>
 
 <script>
 const quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const raiz = document.documentElement;
-
-// Panel del boceto: cada grupo de radios escribe su atributo data-* en <html>.
-(function(){
-  const alCambiar = {
-    logo: v => document.querySelectorAll('use.logo-uso').forEach(u => u.setAttribute('href', '#logo-' + v)),
-    puntos: () => window.dispatchEvent(new Event('vz-puntos'))
-  };
-  document.querySelectorAll('.panel-cuerpo input[type="radio"]').forEach(r => {
-    const k = r.name;
-    if (raiz.dataset[k] === r.value) r.checked = true;
-    r.addEventListener('change', () => {
-      raiz.dataset[k] = r.value;
-      try { localStorage.setItem('vz-' + k, r.value); } catch(e) {}
-      if (alCambiar[k]) alCambiar[k](r.value);
-    });
-  });
-  alCambiar.logo(raiz.dataset.logo);
-})();
 
 // Fondo: toma el tono de la zona que cruza la línea media de la pantalla.
 (function(){
@@ -1004,18 +790,13 @@ const raiz = document.documentElement;
 // Malla de puntos detrás del robot: una esfera que respira y gira lento.
 (function(){
   const cv = document.getElementById('malla'), ctx = cv.getContext('2d');
-  const paletas = {
-    lima: ['#D4EE5E'],
-    robot: ['#DDB35C', '#86B6F2', '#C9C6BA', '#4FCDB4', '#D4EE5E'],
-    turquesa: ['#5EEAD4']
-  };
+  const paleta = ['#DDB35C', '#86B6F2', '#C9C6BA', '#4FCDB4', '#D4EE5E']; // colores del robot
   const N = 900, puntos = [], oro = Math.PI * (3 - Math.sqrt(5));
   for (let i = 0; i < N; i++) {
     const y = 1 - 2 * (i + .5) / N, r = Math.sqrt(1 - y*y), a = i * oro;
     puntos.push([Math.cos(a) * r, y, Math.sin(a) * r, (i * 7) % 5]);
   }
-  let w = 0, h = 0, paleta = paletas.lima;
-  const elegirPaleta = () => { paleta = paletas[raiz.dataset.puntos] || paletas.lima; };
+  let w = 0, h = 0;
   function medir(){
     const dpr = Math.min(devicePixelRatio || 1, 2);
     w = cv.clientWidth; h = cv.clientHeight;
@@ -1040,8 +821,7 @@ const raiz = document.documentElement;
     }
     ctx.globalAlpha = 1;
   }
-  elegirPaleta(); medir();
-  addEventListener('vz-puntos', () => { elegirPaleta(); if (quieto) dibujar(0); });
+  medir();
   addEventListener('resize', () => { medir(); if (quieto) dibujar(0); });
   if (quieto) { dibujar(0); return; }
   let id = 0;
@@ -1151,11 +931,20 @@ document.querySelectorAll('.galeria').forEach(g => {
 (function(){
   const ol = document.getElementById('pasos'), lleno = document.getElementById('pista-llena');
   const pasos = [...ol.children];
+  const horizontal = matchMedia('(min-width:960px)');
+  const limitar = v => Math.min(1, Math.max(0, v));
   function upd(){
-    const ref = innerHeight * .6, r = ol.getBoundingClientRect();
-    const p = Math.min(1, Math.max(0, (ref - r.top) / r.height));
-    lleno.style.transform = 'scaleY(' + p + ')';
-    pasos.forEach(li => li.classList.toggle('activo', li.getBoundingClientRect().top + 20 < ref));
+    const r = ol.getBoundingClientRect();
+    if (horizontal.matches) {
+      // se llena mientras la línea sube del 85% al 40% de la pantalla
+      const p = limitar((innerHeight * .85 - r.top) / (innerHeight * .45));
+      lleno.style.transform = 'scaleX(' + p + ')';
+      pasos.forEach(li => li.classList.toggle('activo', p > .02 && li.getBoundingClientRect().left - r.left <= p * r.width));
+    } else {
+      const ref = innerHeight * .6, p = limitar((ref - r.top) / r.height);
+      lleno.style.transform = 'scaleY(' + p + ')';
+      pasos.forEach(li => li.classList.toggle('activo', li.getBoundingClientRect().top + 20 < ref));
+    }
   }
   let pend = false;
   addEventListener('scroll', () => { if (!pend) { pend = true; requestAnimationFrame(() => { pend = false; upd(); }); } }, {passive:true});
