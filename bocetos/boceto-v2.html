@@ -26,6 +26,7 @@
   --rosa:#F472B6;
   --kiosco:#FBBF24;
   --lavanda:#A78BFA;
+  --menta:#4CD886;
   --nota:#FFC857;
 
   --f-display:"Space Grotesk",system-ui,sans-serif;
@@ -62,6 +63,7 @@ main{overflow-x:clip}
 .ambiente[data-tono="rosa"]   {--amb-fondo:#0D0A1F;--amb-brillo:rgba(244,114,182,.17)}
 .ambiente[data-tono="ambar"]  {--amb-fondo:#0B0F1E;--amb-brillo:rgba(251,191,36,.13)}
 .ambiente[data-tono="lavanda"]{--amb-fondo:#090B24;--amb-brillo:rgba(167,139,250,.19)}
+.ambiente[data-tono="menta"]  {--amb-fondo:#05131A;--amb-brillo:rgba(76,216,134,.14)}
 .ambiente[data-tono="turquesa"]{--amb-fondo:#04111A;--amb-brillo:rgba(94,234,212,.15)}
 
 /* Logo: ícono completo, fondo incluido */
@@ -167,6 +169,9 @@ main{overflow-x:clip}
     radial-gradient(80% 70% at 70% 20%, color-mix(in srgb, var(--tinte) 30%, transparent), transparent 70%),
     linear-gradient(160deg,#0D1628,#070C18)}
 .slide svg{position:absolute;inset:0;width:100%;height:100%}
+/* Capturas reales: las de compu llenan la diapositiva; las de celu asoman como un teléfono cortado abajo */
+.slide .foto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
+.slide .foto.celu{inset:auto;left:50%;top:7%;width:auto;height:93%;transform:translateX(-50%);border-radius:24px 24px 0 0;box-shadow:0 0 0 1px rgba(255,255,255,.08),0 24px 60px rgba(0,0,0,.55)}
 .slide figcaption{position:absolute;left:16px;bottom:14px;font:12px/1 var(--f-mono);color:var(--texto);text-shadow:0 1px 8px rgba(0,0,0,.8)}
 .galeria-control{display:flex;align-items:center;gap:14px}
 .puntos{display:flex;gap:4px}
@@ -555,9 +560,9 @@ main{overflow-x:clip}
   <section class="seccion" id="trabajos" aria-labelledby="t-trabajos">
     <div class="envoltura">
       <div class="cabecera revela" data-ambiente="navy">
-        <h2 id="t-trabajos">Ya está andando en comercios de la zona</h2>
-        <p>Sistemas que se usan todos los días. Deslizá las capturas para verlos por dentro.</p>
-        <span class="nota-boceto">Capturas ilustrativas: acá van las reales</span>
+        <h2 id="t-trabajos">Ya está andando</h2>
+        <p>Sistemas que se usan todos los días y uno propio que está en desarrollo. Deslizá las capturas para verlos por dentro.</p>
+        <span class="nota-boceto">Capturas ilustrativas, salvo las del Conciliador (son de su demo)</span>
       </div>
 
       <div class="proyectos">
@@ -617,6 +622,29 @@ main{overflow-x:clip}
             <dl class="datos">
               <dt>Pedidos</dt><dd>Por WhatsApp</dd>
               <dt>Fotos</dt><dd>Desde una carpeta compartida</dd>
+            </dl>
+          </div>
+        </article>
+
+        <article class="proyecto revela" data-ambiente="menta" style="--tinte:var(--menta)">
+          <div class="galeria">
+            <div class="carril" tabindex="0" aria-label="Capturas del Conciliador">
+              <figure class="slide"><img class="foto" src="capturas/conciliador/gastos-compu.webp" alt="Gastos del mes en la computadora: lo gastado, lo que hay que atender y en qué se fue" width="1200" height="900"><figcaption>Gastos del mes</figcaption></figure>
+              <figure class="slide"><img class="foto celu" src="capturas/conciliador/revisar.webp" alt="Revisar un gasto pendiente en el celular" width="520" height="1000" loading="lazy"><figcaption>Revisar un gasto</figcaption></figure>
+              <figure class="slide"><img class="foto celu" src="capturas/conciliador/movimientos.webp" alt="Movimientos del mes con buscador y filtros" width="520" height="1000" loading="lazy"><figcaption>Movimientos</figcaption></figure>
+              <figure class="slide"><img class="foto celu" src="capturas/conciliador/inversiones.webp" alt="Cartera de inversiones con ganancia por posición" width="520" height="1000" loading="lazy"><figcaption>Inversiones</figcaption></figure>
+            </div>
+            <div class="galeria-control"></div>
+          </div>
+          <div class="proyecto-texto">
+            <p class="rubro">Finanzas · Proyecto propio</p>
+            <h3>Conciliador</h3>
+            <p class="estado"><i></i>En desarrollo</p>
+            <p class="proyecto-desc">Lee los resúmenes en PDF de Mercado Pago y de las tarjetas, los verifica al centavo y cruza lo gastado contra lo planeado, en pesos y en dólares al oficial del día. Avisa lo que no cierra: un fijo que no se debitó, una cuota que falta o un resumen sin pagar.</p>
+            <dl class="datos">
+              <dt>Lee</dt><dd>Resúmenes de Mercado Pago, Comafi y Banco Nación</dd>
+              <dt>Con IA</dt><dd>Carga inversiones desde una captura de pantalla</dd>
+              <dt>Tus datos</dt><dd>Quedan en tu compu, no salen de ahí</dd>
             </dl>
           </div>
         </article>
