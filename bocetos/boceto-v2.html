@@ -171,6 +171,7 @@ main{overflow-x:clip}
 .slide svg{position:absolute;inset:0;width:100%;height:100%}
 /* Capturas reales: las de compu llenan la diapositiva; las de celu asoman como un teléfono cortado abajo */
 .slide .foto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
+.slide .foto.ticket{inset:auto;left:50%;top:7%;width:auto;height:86%;transform:translateX(-50%) rotate(-2deg);border-radius:4px;box-shadow:0 24px 60px rgba(0,0,0,.55)}
 .slide .foto.celu{inset:auto;left:50%;top:7%;width:auto;height:93%;transform:translateX(-50%);border-radius:24px 24px 0 0;box-shadow:0 0 0 1px rgba(255,255,255,.08),0 24px 60px rgba(0,0,0,.55)}
 .slide figcaption{position:absolute;left:16px;bottom:14px;font:12px/1 var(--f-mono);color:var(--texto);text-shadow:0 1px 8px rgba(0,0,0,.8)}
 .galeria-control{display:flex;align-items:center;gap:14px}
@@ -531,6 +532,7 @@ main{overflow-x:clip}
           <div class="galeria">
             <div class="carril" tabindex="0" aria-label="Capturas de Salón Ivana">
               <figure class="slide"><img class="foto" src="capturas/ivana/facturar.webp" alt="Pantalla de facturar: servicios por categoría, ticket con descuento y forma de pago" width="1440" height="900"><figcaption>Facturar</figcaption></figure>
+              <figure class="slide"><img class="foto ticket" src="capturas/ivana/ticket.webp" alt="Ticket impreso de Ivana Salón con los servicios, el descuento del 10% y el total cobrado en efectivo" width="688" height="820" loading="lazy"><figcaption>El ticket</figcaption></figure>
               <figure class="slide"><img class="foto" src="capturas/ivana/caja.webp" alt="Cierre de caja del día con ingresos, egresos y arqueo del efectivo" width="1440" height="900" loading="lazy"><figcaption>Caja del día</figcaption></figure>
               <figure class="slide"><img class="foto" src="capturas/ivana/agenda.webp" alt="Agenda del día con una columna por empleada" width="1440" height="900" loading="lazy"><figcaption>Agenda</figcaption></figure>
               <figure class="slide"><img class="foto" src="capturas/ivana/depilacion.webp" alt="Cobro de sesiones de depilación por cantidad de zonas, con señas" width="1440" height="900" loading="lazy"><figcaption>Depilación</figcaption></figure>
