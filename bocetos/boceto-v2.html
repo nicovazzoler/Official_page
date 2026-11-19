@@ -23,9 +23,9 @@
   --lima:#D4EE5E;
   --crema:#E4DDCB;
   --verde:#4ADE80;
-  --rosa:#F472B6;
-  --kiosco:#FBBF24;
+  --dorado:#C9A84C;
   --lavanda:#A78BFA;
+  --naranja:#E8833A;
   --menta:#4CD886;
   --nota:#FFC857;
 
@@ -60,8 +60,8 @@ main{overflow-x:clip}
   transition:--amb-fondo 1.2s ease, --amb-brillo 1.2s ease}
 .ambiente[data-tono="negro"]  {--amb-fondo:#030405;--amb-brillo:rgba(212,238,94,.05)}
 .ambiente[data-tono="navy"]   {--amb-fondo:#060E1E;--amb-brillo:rgba(60,110,230,.16)}
-.ambiente[data-tono="rosa"]   {--amb-fondo:#0D0A1F;--amb-brillo:rgba(244,114,182,.17)}
-.ambiente[data-tono="ambar"]  {--amb-fondo:#0B0F1E;--amb-brillo:rgba(251,191,36,.13)}
+.ambiente[data-tono="dorado"] {--amb-fondo:#0D0D16;--amb-brillo:rgba(201,168,76,.15)}
+.ambiente[data-tono="naranja"]{--amb-fondo:#0E0B16;--amb-brillo:rgba(232,131,58,.15)}
 .ambiente[data-tono="lavanda"]{--amb-fondo:#090B24;--amb-brillo:rgba(167,139,250,.19)}
 .ambiente[data-tono="menta"]  {--amb-fondo:#05131A;--amb-brillo:rgba(76,216,134,.14)}
 .ambiente[data-tono="turquesa"]{--amb-fondo:#04111A;--amb-brillo:rgba(94,234,212,.15)}
@@ -164,7 +164,7 @@ main{overflow-x:clip}
 .galeria{display:grid;gap:14px;min-width:0}
 .carril{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:22px;overscroll-behavior-x:contain}
 .carril::-webkit-scrollbar{display:none}
-.slide{flex:0 0 86%;scroll-snap-align:start;margin:0;position:relative;border-radius:22px;overflow:hidden;aspect-ratio:4/3;max-width:100%;
+.slide{flex:0 0 86%;scroll-snap-align:start;margin:0;position:relative;border-radius:22px;overflow:hidden;aspect-ratio:16/10;max-width:100%;
   background:
     radial-gradient(80% 70% at 70% 20%, color-mix(in srgb, var(--tinte) 30%, transparent), transparent 70%),
     linear-gradient(160deg,#0D1628,#070C18)}
@@ -363,24 +363,6 @@ main{overflow-x:clip}
       <rect x="314" y="152" width="16" height="74" rx="3" opacity=".7"/>
     </g>
   </symbol>
-  <symbol id="mock-agenda" viewBox="0 0 400 300">
-    <rect x="34" y="34" width="332" height="222" rx="16" style="fill:#0B1322;stroke:rgba(255,255,255,.1)"/>
-    <rect x="52" y="52" width="90" height="10" rx="5" style="fill:#DDE6F2"/>
-    <rect x="290" y="48" width="58" height="20" rx="10" style="fill:var(--tinte)"/>
-    <g style="fill:#121F37">
-      <rect x="52" y="82" width="56" height="158" rx="8"/><rect x="112" y="82" width="56" height="158" rx="8"/><rect x="172" y="82" width="56" height="158" rx="8"/><rect x="232" y="82" width="56" height="158" rx="8"/><rect x="292" y="82" width="56" height="158" rx="8"/>
-    </g>
-    <g style="fill:var(--tinte)">
-      <rect x="56" y="92" width="48" height="34" rx="6" opacity=".85"/>
-      <rect x="56" y="150" width="48" height="24" rx="6" opacity=".45"/>
-      <rect x="116" y="112" width="48" height="44" rx="6" opacity=".6"/>
-      <rect x="176" y="92" width="48" height="22" rx="6" opacity=".45"/>
-      <rect x="176" y="130" width="48" height="50" rx="6"/>
-      <rect x="236" y="160" width="48" height="30" rx="6" opacity=".6"/>
-      <rect x="296" y="96" width="48" height="30" rx="6" opacity=".7"/>
-      <rect x="296" y="196" width="48" height="30" rx="6" opacity=".45"/>
-    </g>
-  </symbol>
   <symbol id="mock-celu" viewBox="0 0 400 300">
     <rect x="140" y="22" width="120" height="256" rx="24" style="fill:#0B1322;stroke:rgba(255,255,255,.16);stroke-width:2"/>
     <rect x="182" y="32" width="36" height="8" rx="4" style="fill:#1B2840"/>
@@ -398,15 +380,6 @@ main{overflow-x:clip}
     <g style="fill:#121F37"><rect x="52" y="94" width="296" height="28" rx="7"/><rect x="52" y="128" width="296" height="28" rx="7"/><rect x="52" y="162" width="296" height="28" rx="7"/><rect x="52" y="196" width="296" height="28" rx="7"/></g>
     <g style="fill:#3A4A68"><rect x="64" y="105" width="110" height="6" rx="3"/><rect x="64" y="139" width="90" height="6" rx="3"/><rect x="64" y="173" width="124" height="6" rx="3"/><rect x="64" y="207" width="100" height="6" rx="3"/></g>
     <g style="fill:var(--tinte)"><rect x="300" y="102" width="36" height="12" rx="6" opacity=".8"/><rect x="300" y="136" width="36" height="12" rx="6" opacity=".5"/><rect x="300" y="170" width="36" height="12" rx="6"/><rect x="300" y="204" width="36" height="12" rx="6" opacity=".35"/></g>
-  </symbol>
-  <symbol id="mock-catalogo" viewBox="0 0 400 300">
-    <rect x="34" y="34" width="332" height="222" rx="16" style="fill:#0B1322;stroke:rgba(255,255,255,.1)"/>
-    <rect x="52" y="52" width="110" height="10" rx="5" style="fill:#DDE6F2"/>
-    <g style="fill:#121F37"><rect x="52" y="76" width="56" height="18" rx="9"/><rect x="114" y="76" width="56" height="18" rx="9"/><rect x="176" y="76" width="56" height="18" rx="9"/></g>
-    <rect x="52" y="76" width="56" height="18" rx="9" style="fill:var(--tinte)"/>
-    <g style="fill:var(--tinte)"><rect x="52" y="108" width="92" height="74" rx="10" opacity=".7"/><rect x="154" y="108" width="92" height="74" rx="10" opacity=".45"/><rect x="256" y="108" width="92" height="74" rx="10" opacity=".85"/></g>
-    <g style="fill:#3A4A68"><rect x="52" y="192" width="70" height="7" rx="3.5"/><rect x="154" y="192" width="60" height="7" rx="3.5"/><rect x="256" y="192" width="74" height="7" rx="3.5"/></g>
-    <g style="fill:#121F37"><rect x="52" y="210" width="92" height="26" rx="13"/><rect x="154" y="210" width="92" height="26" rx="13"/><rect x="256" y="210" width="92" height="26" rx="13"/></g>
   </symbol>
 
 </svg>
@@ -550,16 +523,21 @@ main{overflow-x:clip}
       <div class="cabecera revela" data-ambiente="navy">
         <h2 id="t-trabajos">Ya está andando</h2>
         <p>Sistemas que se usan todos los días y uno propio que está en desarrollo. Deslizá las capturas para verlos por dentro.</p>
-        <span class="nota-boceto">Capturas ilustrativas, salvo las del Conciliador (son de su demo)</span>
+        <span class="nota-boceto">Capturas ilustrativas solo en Kioskardo</span>
       </div>
 
       <div class="proyectos">
-        <article class="proyecto revela" data-ambiente="rosa" style="--tinte:var(--rosa)">
+        <article class="proyecto revela" data-ambiente="dorado" style="--tinte:var(--dorado)">
           <div class="galeria">
             <div class="carril" tabindex="0" aria-label="Capturas de Salón Ivana">
-              <figure class="slide"><svg aria-hidden="true"><use href="#mock-panel"/></svg><figcaption>Caja y comisiones</figcaption></figure>
-              <figure class="slide"><svg aria-hidden="true"><use href="#mock-agenda"/></svg><figcaption>Turnos y señas</figcaption></figure>
-              <figure class="slide"><svg aria-hidden="true"><use href="#mock-celu"/></svg><figcaption>Vista en el celular</figcaption></figure>
+              <figure class="slide"><img class="foto" src="capturas/ivana/facturar.webp" alt="Pantalla de facturar: servicios por categoría, ticket con descuento y forma de pago" width="1440" height="900"><figcaption>Facturar</figcaption></figure>
+              <figure class="slide"><img class="foto" src="capturas/ivana/caja.webp" alt="Cierre de caja del día con ingresos, egresos y arqueo del efectivo" width="1440" height="900" loading="lazy"><figcaption>Caja del día</figcaption></figure>
+              <figure class="slide"><img class="foto" src="capturas/ivana/agenda.webp" alt="Agenda del día con una columna por empleada" width="1440" height="900" loading="lazy"><figcaption>Agenda</figcaption></figure>
+              <figure class="slide"><img class="foto" src="capturas/ivana/depilacion.webp" alt="Cobro de sesiones de depilación por cantidad de zonas, con señas" width="1440" height="900" loading="lazy"><figcaption>Depilación</figcaption></figure>
+              <figure class="slide"><img class="foto" src="capturas/ivana/historial.webp" alt="Historial de tickets con filtros por fecha y estado" width="1440" height="900" loading="lazy"><figcaption>Historial</figcaption></figure>
+              <figure class="slide"><img class="foto" src="capturas/ivana/ficha-clienta.webp" alt="Ficha de una clienta con su seña, próximo turno y tickets" width="1440" height="900" loading="lazy"><figcaption>Ficha de la clienta</figcaption></figure>
+              <figure class="slide"><img class="foto" src="capturas/ivana/sueldos.webp" alt="Sueldos de la semana con los trabajos y la comisión de cada uno" width="1440" height="900" loading="lazy"><figcaption>Sueldos</figcaption></figure>
+              <figure class="slide"><img class="foto" src="capturas/ivana/reportes.webp" alt="Reportes del período con la evolución de la caja y lo más vendido" width="1440" height="900" loading="lazy"><figcaption>Reportes</figcaption></figure>
             </div>
             <div class="galeria-control"></div>
           </div>
@@ -567,7 +545,7 @@ main{overflow-x:clip}
             <p class="rubro">Peluquería</p>
             <h3>Salón Ivana</h3>
             <p class="estado"><i></i>En uso todos los días</p>
-            <p class="proyecto-desc">Facturación con dos listas de precios, caja diaria con arqueo, turnos, señas, sueldos y comisiones de cada empleada, y el ticket impreso en la comandera.</p>
+            <p class="proyecto-desc">Facturación con dos listas de precios, caja diaria con arqueo, agenda por empleada, sesiones de depilación por zonas, fichas de clientas con sus señas, sueldos con comisiones y reportes. El ticket sale por la comandera.</p>
             <dl class="datos">
               <dt>Se usa en</dt><dd>Una tablet en el local</dd>
               <dt>Imprime</dt><dd>Tickets en la comandera</dd>
@@ -576,7 +554,7 @@ main{overflow-x:clip}
           </div>
         </article>
 
-        <article class="proyecto revela" data-ambiente="ambar" style="--tinte:var(--kiosco)">
+        <article class="proyecto revela" data-ambiente="lavanda" style="--tinte:var(--lavanda)">
           <div class="galeria">
             <div class="carril" tabindex="0" aria-label="Capturas de Kioskardo">
               <figure class="slide"><svg aria-hidden="true"><use href="#mock-celu"/></svg><figcaption>Venta con la cámara</figcaption></figure>
@@ -594,19 +572,22 @@ main{overflow-x:clip}
           </div>
         </article>
 
-        <article class="proyecto revela" data-ambiente="lavanda" style="--tinte:var(--lavanda)">
+        <article class="proyecto revela" data-ambiente="naranja" style="--tinte:var(--naranja)">
           <div class="galeria">
-            <div class="carril" tabindex="0" aria-label="Capturas del catálogo de velas">
-              <figure class="slide"><svg aria-hidden="true"><use href="#mock-catalogo"/></svg><figcaption>Catálogo por categoría</figcaption></figure>
-              <figure class="slide"><svg aria-hidden="true"><use href="#mock-celu"/></svg><figcaption>Consulta por WhatsApp</figcaption></figure>
+            <div class="carril" tabindex="0" aria-label="Capturas de Ubuntu Estudio">
+              <figure class="slide"><img class="foto" src="capturas/ubuntu/portada.webp" alt="Portada de Ubuntu Estudio: Recuerdos que permanecen, con una vela con moño" width="1440" height="900" loading="lazy"><figcaption>Portada</figcaption></figure>
+              <figure class="slide"><img class="foto celu" src="capturas/ubuntu/portada-celu.webp" alt="Portada de Ubuntu Estudio en el celular" width="520" height="1000" loading="lazy"><figcaption>En el celular</figcaption></figure>
+              <figure class="slide"><img class="foto" src="capturas/ubuntu/categorias.webp" alt="Categorías del catálogo: comunión, deco, souvenirs, velas y velas con sticker" width="1440" height="900" loading="lazy"><figcaption>Categorías</figcaption></figure>
+              <figure class="slide"><img class="foto" src="capturas/ubuntu/catalogo.webp" alt="Catálogo de productos con filtros y un botón para consultar cada uno por WhatsApp" width="1440" height="900" loading="lazy"><figcaption>Catálogo</figcaption></figure>
+              <figure class="slide"><img class="foto celu" src="capturas/ubuntu/por-que-celu.webp" alt="Sección Por qué Ubuntu en el celular" width="520" height="1000" loading="lazy"><figcaption>Por qué Ubuntu</figcaption></figure>
             </div>
             <div class="galeria-control"></div>
           </div>
           <div class="proyecto-texto">
             <p class="rubro">Velas artesanales</p>
-            <h3>Catálogo online</h3>
+            <h3>Ubuntu Estudio</h3>
             <p class="estado"><i></i>Online</p>
-            <p class="proyecto-desc">Catálogo por categoría con un botón para consultar cada producto por WhatsApp. Las fotos se cargan desde una carpeta compartida y la página se actualiza sola.</p>
+            <p class="proyecto-desc">Catálogo de velas, souvenirs y deco por categoría, con un botón para consultar cada producto por WhatsApp. Las fotos se cargan desde una carpeta compartida y la página se actualiza sola.</p>
             <dl class="datos">
               <dt>Pedidos</dt><dd>Por WhatsApp</dd>
               <dt>Fotos</dt><dd>Desde una carpeta compartida</dd>
@@ -617,7 +598,7 @@ main{overflow-x:clip}
         <article class="proyecto revela" data-ambiente="menta" style="--tinte:var(--menta)">
           <div class="galeria">
             <div class="carril" tabindex="0" aria-label="Capturas del Conciliador">
-              <figure class="slide"><img class="foto" src="capturas/conciliador/gastos-compu.webp" alt="Gastos del mes en la computadora: lo gastado, lo que hay que atender y en qué se fue" width="1200" height="900"><figcaption>Gastos del mes</figcaption></figure>
+              <figure class="slide"><img class="foto" src="capturas/conciliador/gastos-compu.webp" alt="Gastos del mes en la computadora: lo gastado, lo que hay que atender y en qué se fue" width="1440" height="900" loading="lazy"><figcaption>Gastos del mes</figcaption></figure>
               <figure class="slide"><img class="foto celu" src="capturas/conciliador/revisar.webp" alt="Revisar un gasto pendiente en el celular" width="520" height="1000" loading="lazy"><figcaption>Revisar un gasto</figcaption></figure>
               <figure class="slide"><img class="foto celu" src="capturas/conciliador/movimientos.webp" alt="Movimientos del mes con buscador y filtros" width="520" height="1000" loading="lazy"><figcaption>Movimientos</figcaption></figure>
               <figure class="slide"><img class="foto celu" src="capturas/conciliador/inversiones.webp" alt="Cartera de inversiones con ganancia por posición" width="520" height="1000" loading="lazy"><figcaption>Inversiones</figcaption></figure>
