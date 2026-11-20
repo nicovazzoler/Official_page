@@ -1,0 +1,9 @@
+// Publicación en Cloudflare: `npm run build` arma dist/ y `npx wrangler deploy` la sube tal cual.
+// Es un sitio estático, así que no hay código de servidor: solo archivos.
+{
+  "name": "vazzoler",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist"
+  }
+}
