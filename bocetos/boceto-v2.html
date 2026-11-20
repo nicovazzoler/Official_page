@@ -168,12 +168,11 @@ main{overflow-x:clip}
   background:
     radial-gradient(80% 70% at 70% 20%, color-mix(in srgb, var(--tinte) 30%, transparent), transparent 70%),
     linear-gradient(160deg,#0D1628,#070C18)}
-.slide svg{position:absolute;inset:0;width:100%;height:100%}
 /* Capturas reales: las de compu llenan la diapositiva; las de celu asoman como un teléfono cortado abajo */
 .slide .foto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
 .slide .foto.ticket{inset:auto;left:50%;top:7%;width:auto;height:86%;transform:translateX(-50%) rotate(-2deg);border-radius:4px;box-shadow:0 24px 60px rgba(0,0,0,.55)}
 .slide .foto.celu{inset:auto;left:50%;top:7%;width:auto;height:93%;transform:translateX(-50%);border-radius:24px 24px 0 0;box-shadow:0 0 0 1px rgba(255,255,255,.08),0 24px 60px rgba(0,0,0,.55)}
-.slide figcaption{position:absolute;left:16px;bottom:14px;font:12px/1 var(--f-mono);color:var(--texto);text-shadow:0 1px 8px rgba(0,0,0,.8)}
+.slide figcaption{position:absolute;left:12px;bottom:12px;font:12px/1 var(--f-mono);color:var(--texto);padding:6px 9px;border-radius:6px;background:rgba(3,6,12,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .galeria-control{display:flex;align-items:center;gap:14px}
 .puntos{display:flex;gap:4px}
 .punto{width:28px;height:28px;border:0;background:none;padding:0;cursor:pointer;display:grid;place-items:center}
@@ -326,7 +325,7 @@ main{overflow-x:clip}
 
 <div class="ambiente" data-tono="negro" aria-hidden="true"></div>
 
-<!-- Logos, pantallas ilustrativas e íconos, definidos una vez -->
+<!-- Logo, definido una vez para la barra y el pie -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <!-- Logos (40×40, ícono completo) -->
   <symbol id="logo-terminal" viewBox="0 0 40 40">
@@ -335,53 +334,6 @@ main{overflow-x:clip}
     <rect x="23.5" y="22.5" width="8" height="3.6" rx="1" fill="#D4EE5E"/>
   </symbol>
 
-  <!-- Pantallas ilustrativas; se pintan con el color de cada proyecto (--tinte) -->
-  <symbol id="mock-panel" viewBox="0 0 400 300">
-    <rect x="34" y="34" width="332" height="222" rx="16" style="fill:#0B1322;stroke:rgba(255,255,255,.1)"/>
-    <rect x="34" y="34" width="78" height="222" rx="16" style="fill:#0F1A2E"/>
-    <rect x="48" y="50" width="26" height="26" rx="8" style="fill:var(--tinte)"/>
-    <rect x="48" y="96" width="50" height="8" rx="4" style="fill:var(--tinte);opacity:.85"/>
-    <rect x="48" y="116" width="42" height="8" rx="4" style="fill:#25344F"/>
-    <rect x="48" y="136" width="46" height="8" rx="4" style="fill:#25344F"/>
-    <rect x="48" y="156" width="36" height="8" rx="4" style="fill:#25344F"/>
-    <rect x="126" y="50" width="70" height="50" rx="10" style="fill:#121F37"/>
-    <rect x="208" y="50" width="70" height="50" rx="10" style="fill:#121F37"/>
-    <rect x="290" y="50" width="62" height="50" rx="10" style="fill:#121F37"/>
-    <rect x="136" y="62" width="30" height="6" rx="3" style="fill:#3A4A68"/>
-    <rect x="136" y="76" width="46" height="12" rx="4" style="fill:var(--tinte)"/>
-    <rect x="218" y="62" width="30" height="6" rx="3" style="fill:#3A4A68"/>
-    <rect x="218" y="76" width="40" height="12" rx="4" style="fill:#DDE6F2"/>
-    <rect x="300" y="62" width="26" height="6" rx="3" style="fill:#3A4A68"/>
-    <rect x="300" y="76" width="36" height="12" rx="4" style="fill:#DDE6F2"/>
-    <rect x="126" y="114" width="226" height="126" rx="10" style="fill:#0F1A2E"/>
-    <g style="fill:var(--tinte)">
-      <rect x="146" y="190" width="16" height="36" rx="3" opacity=".45"/>
-      <rect x="174" y="168" width="16" height="58" rx="3" opacity=".6"/>
-      <rect x="202" y="178" width="16" height="48" rx="3" opacity=".5"/>
-      <rect x="230" y="146" width="16" height="80" rx="3" opacity=".8"/>
-      <rect x="258" y="160" width="16" height="66" rx="3" opacity=".65"/>
-      <rect x="286" y="132" width="16" height="94" rx="3"/>
-      <rect x="314" y="152" width="16" height="74" rx="3" opacity=".7"/>
-    </g>
-  </symbol>
-  <symbol id="mock-celu" viewBox="0 0 400 300">
-    <rect x="140" y="22" width="120" height="256" rx="24" style="fill:#0B1322;stroke:rgba(255,255,255,.16);stroke-width:2"/>
-    <rect x="182" y="32" width="36" height="8" rx="4" style="fill:#1B2840"/>
-    <rect x="154" y="54" width="60" height="9" rx="4.5" style="fill:#DDE6F2"/>
-    <g style="fill:#121F37"><rect x="154" y="74" width="92" height="36" rx="8"/><rect x="154" y="116" width="92" height="36" rx="8"/><rect x="154" y="158" width="92" height="36" rx="8"/></g>
-    <g style="fill:var(--tinte)"><rect x="160" y="80" width="24" height="24" rx="6" opacity=".8"/><rect x="160" y="122" width="24" height="24" rx="6" opacity=".55"/><rect x="160" y="164" width="24" height="24" rx="6" opacity=".7"/></g>
-    <g style="fill:#3A4A68"><rect x="192" y="86" width="44" height="6" rx="3"/><rect x="192" y="128" width="38" height="6" rx="3"/><rect x="192" y="170" width="46" height="6" rx="3"/></g>
-    <rect x="154" y="226" width="92" height="30" rx="15" style="fill:var(--tinte)"/>
-  </symbol>
-  <symbol id="mock-lista" viewBox="0 0 400 300">
-    <rect x="34" y="34" width="332" height="222" rx="16" style="fill:#0B1322;stroke:rgba(255,255,255,.1)"/>
-    <rect x="52" y="52" width="180" height="26" rx="13" style="fill:#121F37"/>
-    <rect x="64" y="61" width="80" height="8" rx="4" style="fill:#3A4A68"/>
-    <rect x="248" y="52" width="100" height="26" rx="13" style="fill:var(--tinte)"/>
-    <g style="fill:#121F37"><rect x="52" y="94" width="296" height="28" rx="7"/><rect x="52" y="128" width="296" height="28" rx="7"/><rect x="52" y="162" width="296" height="28" rx="7"/><rect x="52" y="196" width="296" height="28" rx="7"/></g>
-    <g style="fill:#3A4A68"><rect x="64" y="105" width="110" height="6" rx="3"/><rect x="64" y="139" width="90" height="6" rx="3"/><rect x="64" y="173" width="124" height="6" rx="3"/><rect x="64" y="207" width="100" height="6" rx="3"/></g>
-    <g style="fill:var(--tinte)"><rect x="300" y="102" width="36" height="12" rx="6" opacity=".8"/><rect x="300" y="136" width="36" height="12" rx="6" opacity=".5"/><rect x="300" y="170" width="36" height="12" rx="6"/><rect x="300" y="204" width="36" height="12" rx="6" opacity=".35"/></g>
-  </symbol>
 
 </svg>
 
@@ -524,7 +476,6 @@ main{overflow-x:clip}
       <div class="cabecera revela" data-ambiente="navy">
         <h2 id="t-trabajos">Ya está andando</h2>
         <p>Sistemas que se usan todos los días y uno propio que está en desarrollo. Deslizá las capturas para verlos por dentro.</p>
-        <span class="nota-boceto">Capturas ilustrativas solo en Kioskardo</span>
       </div>
 
       <div class="proyectos">
@@ -559,9 +510,13 @@ main{overflow-x:clip}
         <article class="proyecto revela" data-ambiente="lavanda" style="--tinte:var(--lavanda)">
           <div class="galeria">
             <div class="carril" tabindex="0" aria-label="Capturas de Kioskardo">
-              <figure class="slide"><svg aria-hidden="true"><use href="#mock-celu"/></svg><figcaption>Venta con la cámara</figcaption></figure>
-              <figure class="slide"><svg aria-hidden="true"><use href="#mock-lista"/></svg><figcaption>Stock</figcaption></figure>
-              <figure class="slide"><svg aria-hidden="true"><use href="#mock-panel"/></svg><figcaption>Caja del día</figcaption></figure>
+              <figure class="slide"><img class="foto" src="capturas/kioskardo/venta.webp" alt="Pantalla de venta: productos por categoría, venta actual, medios de pago y vuelto" width="1440" height="900" loading="lazy"><figcaption>Venta</figcaption></figure>
+              <figure class="slide"><img class="foto celu" src="capturas/kioskardo/venta-celu.webp" alt="Venta desde el celular con buscador y categorías" width="520" height="1000" loading="lazy"><figcaption>En el celular</figcaption></figure>
+              <figure class="slide"><img class="foto" src="capturas/kioskardo/pantalla-cliente.webp" alt="Pantalla que mira el cliente con lo que lleva, el total y el vuelto" width="1440" height="900" loading="lazy"><figcaption>Pantalla del cliente</figcaption></figure>
+              <figure class="slide"><img class="foto" src="capturas/kioskardo/inventario.webp" alt="Inventario con stock, precio y margen de cada producto" width="1440" height="900" loading="lazy"><figcaption>Inventario</figcaption></figure>
+              <figure class="slide"><img class="foto" src="capturas/kioskardo/caja-turno.webp" alt="Caja del turno con el efectivo que debería haber y las ventas por medio de pago" width="1440" height="900" loading="lazy"><figcaption>Caja del turno</figcaption></figure>
+              <figure class="slide"><img class="foto" src="capturas/kioskardo/turno-cerrado.webp" alt="Cierre de turno: el efectivo contado cuadra y se abre el turno siguiente" width="1440" height="900" loading="lazy"><figcaption>Cierre de turno</figcaption></figure>
+              <figure class="slide"><img class="foto" src="capturas/kioskardo/turnos-horas.webp" alt="Turnos y horas de cada empleado en la semana, con lo que faltó o cuadró" width="1440" height="900" loading="lazy"><figcaption>Turnos y horas</figcaption></figure>
             </div>
             <div class="galeria-control"></div>
           </div>
@@ -569,8 +524,11 @@ main{overflow-x:clip}
             <p class="rubro">Kiosco</p>
             <h3>Kioskardo</h3>
             <p class="estado"><i></i>Listo para usar</p>
-            <p class="proyecto-desc">Venta con lector de códigos o con la cámara del celular, stock, caja con arqueo y varios medios de pago. Si se corta internet, sigue vendiendo y sincroniza solo cuando vuelve.</p>
-            <span class="nota-boceto">Sin datos cargados: el bloque no ocupa lugar</span>
+            <p class="proyecto-desc">Venta con lector de códigos o con la cámara del celular, también por peso. Inventario con márgenes y aviso de stock bajo, caja por turno que se cierra contando la plata, y una pantalla para que el cliente vea lo que lleva. Si se corta internet, sigue vendiendo y sincroniza solo cuando vuelve.</p>
+            <dl class="datos">
+              <dt>Cobra con</dt><dd>Efectivo, débito, crédito, transferencia y QR</dd>
+              <dt>Turnos</dt><dd>Horas de cada empleado y cierre de caja por turno</dd>
+            </dl>
           </div>
         </article>
 
