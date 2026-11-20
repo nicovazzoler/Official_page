@@ -1,0 +1,108 @@
+---
+import { tonos } from '../lib/tonos';
+
+const pasos = [
+  { titulo: 'Charlamos en tu local', texto: 'Miro cómo trabajás hoy y qué te complica el día. Sin compromiso.' },
+  { titulo: 'Te muestro una primera versión', texto: 'Algo concreto para tocar y probar, armado con tus precios y tus productos.' },
+  { titulo: 'Lo probás con tu gente', texto: 'Ajustamos lo que haga falta hasta que se use sin pensarlo.' },
+  { titulo: 'Queda andando y te acompaño', texto: 'Copias de seguridad, cambios y soporte cuando lo necesitás.' },
+];
+---
+
+<section class="seccion" id="como-trabajo" {...tonos.navy} aria-labelledby="t-proceso">
+  <div class="envoltura">
+    <div class="cabecera revela">
+      <h2 id="t-proceso">De la charla a tenerlo andando</h2>
+      <p>Cuatro pasos, sin vueltas. Vos seguís con tu negocio mientras tanto.</p>
+    </div>
+    <div class="linea">
+      <span class="pista" aria-hidden="true"></span>
+      <span class="pista llena" id="pista-llena" aria-hidden="true"></span>
+      <ol class="pasos" id="pasos">
+        {
+          pasos.map((p, i) => (
+            <li class="paso">
+              <span class="numero" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>{p.titulo}</h3>
+                <p>{p.texto}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../scripts/proceso';
+</script>
+
+<style>
+  /* Celu: línea vertical a la izquierda que se llena al bajar */
+  .linea { position: relative; padding-left: 30px; min-width: 0; }
+  .pista { position: absolute; left: 5px; top: 10px; bottom: 10px; width: 2px; border-radius: 2px; background: var(--linea); }
+  .llena {
+    background: linear-gradient(var(--turquesa), #3B82F6);
+    box-shadow: 0 0 14px rgb(94 234 212 / 0.5);
+    transform-origin: top;
+    transform: scaleY(0);
+    transition: transform 0.15s linear;
+  }
+
+  .pasos {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: clamp(36px, 5vw, 56px) 22px;
+  }
+  /* subgrid: todos los números comparten columna y los títulos quedan alineados */
+  .paso {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    align-items: start;
+    align-content: start;
+    position: relative;
+  }
+  .paso::before {
+    content: '';
+    position: absolute;
+    left: -30px;
+    top: clamp(20px, 2.6vw, 30px);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--navy);
+    border: 2px solid var(--tenue);
+    transition: background 0.4s, border-color 0.4s, box-shadow 0.4s;
+  }
+  .paso.activo::before { background: var(--turquesa); border-color: var(--turquesa); box-shadow: 0 0 0 6px rgb(94 234 212 / 0.14); }
+
+  .numero {
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: clamp(56px, 7vw, 96px);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--tenue);
+    transition: color 0.5s ease, -webkit-text-stroke-color 0.5s ease, text-shadow 0.5s ease;
+  }
+  .paso.activo .numero { color: var(--turquesa); -webkit-text-stroke-color: var(--turquesa); text-shadow: 0 0 40px rgb(94 234 212 / 0.35); }
+  h3 { font-size: clamp(22px, 2.2vw, 28px); letter-spacing: -0.02em; line-height: 1.15; padding-top: 4px; }
+  .paso p { color: var(--suave); margin-top: 8px; max-width: 44ch; }
+
+  /* Escritorio: los cuatro pasos en fila, con la pista arriba llenándose de izquierda a derecha */
+  @media (min-width: 960px) {
+    .linea { padding-left: 0; padding-top: 48px; }
+    .pista { left: 0; right: 0; top: 5px; bottom: auto; width: auto; height: 2px; }
+    .llena { transform-origin: left; transform: scaleX(0); }
+    .pasos { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; }
+    .paso { grid-column: auto; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+    .paso::before { left: 0; top: -48px; }
+  }
+</style>

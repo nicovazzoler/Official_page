@@ -1,0 +1,123 @@
+/* Tokens y base de toda la página. Los estilos de cada sección viven en su componente. */
+@property --amb-fondo { syntax: '<color>'; inherits: false; initial-value: #030405; }
+@property --amb-brillo { syntax: '<color>'; inherits: false; initial-value: rgb(212 238 94 / 0.05); }
+
+:root {
+  color-scheme: dark;
+  --negro: #030405;
+  --navy: #060E1E;
+  --texto: #EEF3F8;
+  --suave: #9AABC2;
+  --tenue: #5E6E88;
+  --linea: rgb(154 171 194 / 0.16);
+  --turquesa: #5EEAD4;
+  --turquesa-osc: #04201C;
+  --lima: #D4EE5E;
+  --verde: #4ADE80;
+
+  --f-display: 'Space Grotesk Variable', system-ui, sans-serif;
+  --f-cuerpo: 'Space Grotesk Variable', system-ui, sans-serif;
+  --f-mono: 'Space Mono', ui-monospace, Menlo, monospace;
+  --d-peso: 600;
+  --d-track: -0.05em;
+
+  --ancho: 1180px;
+}
+
+* { box-sizing: border-box; }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(76px + env(safe-area-inset-top, 0px));
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+body {
+  margin: 0;
+  background: var(--negro);
+  color: var(--texto);
+  font-family: var(--f-cuerpo);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+/* Pinta la franja de la muesca del celu, arriba de la barra fija */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 40;
+  background: var(--negro);
+}
+a { color: inherit; }
+img { max-width: 100%; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 {
+  font-family: var(--f-display);
+  font-weight: var(--d-peso);
+  letter-spacing: var(--d-track);
+  line-height: 1;
+  text-wrap: balance;
+}
+:focus-visible { outline: 2px solid var(--turquesa); outline-offset: 4px; border-radius: 8px; }
+main { overflow-x: clip; }
+
+.mono { font-family: var(--f-mono); }
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.acento { color: var(--turquesa); }
+
+.envoltura {
+  max-width: var(--ancho);
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+.seccion { padding-block: clamp(80px, 11vw, 150px); }
+.cabecera { display: grid; gap: 16px; margin-bottom: clamp(40px, 6vw, 72px); max-width: 760px; }
+.cabecera h2 { font-size: clamp(36px, 5.2vw, 68px); }
+.cabecera p { color: var(--suave); font-size: clamp(17px, 1.5vw, 19px); max-width: 52ch; }
+
+/* Capa fija del fondo; scripts/ambiente.ts le cambia los dos colores */
+.ambiente {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(55% 45% at 82% 22%, var(--amb-brillo), transparent 70%),
+    radial-gradient(45% 40% at 8% 92%, var(--amb-brillo), transparent 70%),
+    var(--amb-fondo);
+  transition: --amb-fondo 1.2s ease, --amb-brillo 1.2s ease;
+}
+
+/* Aparición al scrollear: solo movimiento, el contenido está visible siempre */
+.revela { transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.revela.abajo { transform: translateY(28px); }
+
+/* Entrada de la portada: arranca visible y se acomoda */
+.entra { animation: entra 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.entra.d1 { animation-delay: 0.08s; }
+.entra.d2 { animation-delay: 0.16s; }
+.entra.d3 { animation-delay: 0.26s; }
+.entra.d4 { animation-delay: 0.36s; }
+
+@keyframes entra { from { transform: translateY(0.4em); opacity: 0.3; } }
+@keyframes titila { 50% { opacity: 0; } }
+@keyframes onda {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, currentColor 60%, transparent); }
+  70%, 100% { box-shadow: 0 0 0 9px transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  html { scroll-behavior: auto; }
+  .revela.abajo { transform: none; }
+}

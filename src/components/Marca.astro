@@ -1,0 +1,21 @@
+---
+// Logo + nombre + bajada, enlazado al inicio. Va en la barra y en el pie.
+import Logo from './Logo.astro';
+import { sitio } from '../datos/sitio';
+
+interface Props {
+  etiqueta: string;
+}
+const { etiqueta } = Astro.props;
+---
+
+<a class="marca" href="#inicio" aria-label={etiqueta}>
+  <Logo />
+  <span><b>{sitio.nombre}</b><small>{sitio.bajada}</small></span>
+</a>
+
+<style>
+  .marca { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  b { font-family: var(--f-display); font-weight: var(--d-peso); font-size: 20px; letter-spacing: -0.03em; line-height: 1; }
+  small { display: block; font-size: 11.5px; color: var(--suave); letter-spacing: 0.02em; margin-top: 3px; }
+</style>

@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import Barra from '../components/Barra.astro';
+import Portada from '../components/Portada.astro';
+import Servicios from '../components/Servicios.astro';
+import Trabajos from '../components/Trabajos.astro';
+import Reglas from '../components/Reglas.astro';
+import Proceso from '../components/Proceso.astro';
+import Contacto from '../components/Contacto.astro';
+import Pie from '../components/Pie.astro';
+---
+
+<Base>
+  <Barra />
+  <main id="inicio">
+    <Portada />
+    <Servicios />
+    <Trabajos />
+    <Reglas />
+    <Proceso />
+    <Contacto />
+  </main>
+  <Pie />
+</Base>

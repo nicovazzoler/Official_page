@@ -1,0 +1,123 @@
+---
+// El robot de la marca. En la portada saluda; en contacto tiene los dos brazos abajo.
+// `id` hace únicos los filtros y degradés, porque el robot aparece dos veces en la página.
+interface Props {
+  id: string;
+  saluda?: boolean;
+  class?: string;
+}
+const { id, saluda = false, class: clase } = Astro.props;
+const ref = (nombre: string) => `${id}-${nombre}`;
+const url = (nombre: string) => `url(#${ref(nombre)})`;
+---
+
+<svg
+  class:list={['robot', clase]}
+  viewBox="0 0 360 420"
+  role={saluda ? 'img' : undefined}
+  aria-label={saluda ? 'Robot saludando' : undefined}
+  aria-hidden={saluda ? undefined : 'true'}
+>
+  <defs>
+    <radialGradient id={ref('piso')} cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#D4EE5E" stop-opacity=".32"></stop>
+      <stop offset="1" stop-color="#D4EE5E" stop-opacity="0"></stop>
+    </radialGradient>
+    <filter id={ref('brilla')} x="-1" y="-1" width="3" height="3">
+      <feGaussianBlur stdDeviation="3.5" result="b"></feGaussianBlur>
+      <feMerge><feMergeNode in="b"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+    </filter>
+    <!-- Grano de papel: puntitos oscuros recortados a la forma -->
+    <filter id={ref('grano')} x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" stitchTiles="stitch" result="n"></feTurbulence>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1.8 0 0 0 -.75" result="m"></feColorMatrix>
+      <feComposite in="m" in2="SourceGraphic" operator="in"></feComposite>
+    </filter>
+    <clipPath id={ref('torso')}><rect x="105" y="228" width="150" height="120" rx="28"></rect></clipPath>
+  </defs>
+
+  <ellipse class="piso" cx="180" cy="398" rx="92" ry="11" fill={url('piso')}></ellipse>
+  <g class="cuerpo">
+    <!-- antena y orejas -->
+    <path d="M180 74V38" stroke="#E4DDCB" stroke-width="3.5" stroke-linecap="round"></path>
+    <circle class="antena" cx="180" cy="30" r="9" fill="#D4EE5E" filter={url('brilla')}></circle>
+    <path d="M72 134h20M268 134h20" stroke="#E4DDCB" stroke-width="3.5" stroke-linecap="round"></path>
+
+    <!-- brazos -->
+    <path d="M108 262C82 264 72 296 76 332" fill="none" stroke="#ECE6D8" stroke-width="3.5" stroke-linecap="round"></path>
+    <circle cx="76" cy="342" r="11" fill="#E8A55C"></circle>
+    {
+      saluda ? (
+        <g class="saludo">
+          <path d="M252 262C282 260 300 238 304 206" fill="none" stroke="#ECE6D8" stroke-width="3.5" stroke-linecap="round" />
+          <circle cx="305" cy="195" r="11" fill="#4FCDB4" />
+        </g>
+      ) : (
+        <g>
+          <path d="M252 262C278 264 288 296 284 332" fill="none" stroke="#ECE6D8" stroke-width="3.5" stroke-linecap="round" />
+          <circle cx="284" cy="342" r="11" fill="#4FCDB4" />
+        </g>
+      )
+    }
+
+    <!-- cuello y torso de cuatro módulos -->
+    <rect x="158" y="206" width="44" height="26" rx="5" fill="#3A3A3F"></rect>
+    <g clip-path={url('torso')}>
+      <rect x="105" y="228" width="72.5" height="57.5" rx="6" fill="#DDB35C"></rect>
+      <rect x="182.5" y="228" width="72.5" height="57.5" rx="6" fill="#86B6F2"></rect>
+      <rect x="105" y="290.5" width="72.5" height="57.5" rx="6" fill="#C9C6BA"></rect>
+      <rect x="182.5" y="290.5" width="72.5" height="57.5" rx="6" fill="#4FCDB4"></rect>
+      <g fill="#000" fill-opacity=".28">
+        <circle cx="121" cy="243" r="2.6"></circle><circle cx="129" cy="243" r="2.6"></circle><circle cx="137" cy="243" r="2.6"></circle>
+        <circle cx="198.5" cy="243" r="2.6"></circle><circle cx="206.5" cy="243" r="2.6"></circle><circle cx="214.5" cy="243" r="2.6"></circle>
+        <circle cx="121" cy="305.5" r="2.6"></circle><circle cx="129" cy="305.5" r="2.6"></circle><circle cx="137" cy="305.5" r="2.6"></circle>
+        <circle cx="198.5" cy="305.5" r="2.6"></circle><circle cx="206.5" cy="305.5" r="2.6"></circle><circle cx="214.5" cy="305.5" r="2.6"></circle>
+        <rect x="118" y="254" width="42" height="3.6" rx="1.8"></rect><rect class="dato" x="118" y="263" width="28" height="3.6" rx="1.8"></rect>
+        <rect x="195.5" y="254" width="42" height="3.6" rx="1.8"></rect><rect class="dato d2" x="195.5" y="263" width="28" height="3.6" rx="1.8"></rect>
+        <rect x="118" y="316.5" width="42" height="3.6" rx="1.8"></rect><rect class="dato d3" x="118" y="325.5" width="28" height="3.6" rx="1.8"></rect>
+        <rect x="195.5" y="316.5" width="42" height="3.6" rx="1.8"></rect><rect class="dato d4" x="195.5" y="325.5" width="28" height="3.6" rx="1.8"></rect>
+      </g>
+    </g>
+    <rect x="105" y="228" width="150" height="120" rx="28" filter={url('grano')} opacity=".2"></rect>
+
+    <!-- cabeza -->
+    <rect x="92" y="72" width="176" height="136" rx="36" fill="#E4DDCB"></rect>
+    <rect x="92" y="72" width="176" height="136" rx="36" filter={url('grano')} opacity=".28"></rect>
+    <rect x="114" y="100" width="132" height="62" rx="31" fill="#0B0B0C"></rect>
+    <g class="ojos" filter={url('brilla')}>
+      <circle cx="153" cy="131" r="11" fill="#D4EE5E"></circle>
+      <circle cx="207" cy="131" r="11" fill="#D4EE5E"></circle>
+    </g>
+    <path d="M168 180q12 9 24 0" fill="none" stroke="#2B2A28" stroke-width="3.5" stroke-linecap="round"></path>
+  </g>
+</svg>
+
+<style>
+  .robot { overflow: visible; }
+  .cuerpo { animation: flota 4.2s ease-in-out infinite; }
+  .piso { transform-origin: 180px 398px; animation: piso 4.2s ease-in-out infinite; }
+  /* El hombro derecho está en 252,262: el brazo gira desde ahí */
+  .saludo { transform-origin: 252px 262px; animation: saludo 4s ease-in-out infinite; }
+  .ojos { transform-box: fill-box; transform-origin: center; animation: parpadeo 5.5s infinite; }
+  .antena { animation: late 2.4s ease-in-out infinite; }
+  .dato { transform-box: fill-box; transform-origin: left center; animation: dato 3.2s ease-in-out infinite; }
+  .dato.d2 { animation-delay: 0.8s; }
+  .dato.d3 { animation-delay: 1.6s; }
+  .dato.d4 { animation-delay: 2.4s; }
+
+  @keyframes flota { 50% { transform: translateY(-8px); } }
+  @keyframes piso { 50% { transform: scaleX(0.82); opacity: 0.7; } }
+  /* Saluda durante el 60% del ciclo y descansa el resto */
+  @keyframes saludo {
+    0%, 60%, 100% { transform: rotate(0); }
+    8% { transform: rotate(13deg); }
+    17% { transform: rotate(-8deg); }
+    26% { transform: rotate(13deg); }
+    35% { transform: rotate(-8deg); }
+    44% { transform: rotate(11deg); }
+    52% { transform: rotate(-3deg); }
+  }
+  @keyframes parpadeo { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.08); } }
+  @keyframes late { 50% { opacity: 0.45; } }
+  @keyframes dato { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(0.45); } }
+</style>

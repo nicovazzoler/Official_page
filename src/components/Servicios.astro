@@ -1,0 +1,162 @@
+---
+import Logo from './Logo.astro';
+import { tonos } from '../lib/tonos';
+
+// En escritorio van tres por lado alrededor del logo; en el celu, como un árbol de carpetas.
+const servicios = [
+  { titulo: 'Sistemas de gestión', detalle: 'Ventas, caja, stock y sueldos en una sola app', lado: 'izq', fila: 1 },
+  { titulo: 'Páginas web', detalle: 'Tu negocio en Google, con botón directo a WhatsApp', lado: 'der', fila: 1 },
+  { titulo: 'Turnos y agenda', detalle: 'Reservas, señas y recordatorios sin cuaderno', lado: 'izq', fila: 2 },
+  { titulo: 'Catálogos online', detalle: 'Tus productos con fotos y precios siempre al día', lado: 'der', fila: 2 },
+  { titulo: 'Cuentas corrientes', detalle: 'Quién te debe, cuánto y desde cuándo', lado: 'izq', fila: 3 },
+  { titulo: 'Automatizaciones', detalle: 'Planillas, PDFs y reportes que se arman solos', lado: 'der', fila: 3 },
+];
+
+const ramas =
+  'M0 50C60 50 50 150 100 150M0 150H100M0 250C60 250 50 150 100 150' +
+  'M200 50C140 50 150 150 100 150M200 150H100M200 250C140 250 150 150 100 150M100 150V300';
+---
+
+<section class="seccion" id="servicios" {...tonos.navy} aria-labelledby="t-servicios">
+  <div class="envoltura">
+    <div class="cabecera revela">
+      <h2 id="t-servicios">Sacate trabajo de encima</h2>
+      <p>Lo que hoy hacés a mano, en papel o en tres planillas distintas, se puede hacer solo.</p>
+    </div>
+
+    <div class="mapa" id="mapa">
+      <div class="nodo">
+        <svg class="ramas" viewBox="0 0 200 300" preserveAspectRatio="none" aria-hidden="true">
+          <path class="base" d={ramas}></path>
+          <path class="flujo" d={ramas}></path>
+        </svg>
+        <span class="chip"><Logo tamano={96} titila /></span>
+        <p class="nodo-texto"><b>Vazzoler</b> ~ servicios</p>
+      </div>
+
+      <!-- Orden del DOM = orden de lectura en el celu (fila por fila) -->
+      {
+        servicios.map((s) => (
+          <div class:list={['item', s.lado, `f${s.fila}`]}>
+            <span class="punta" />
+            <p class="cmd">
+              <span class="prompt" aria-hidden="true">❯</span>
+              <span class="tipeo">{s.titulo}</span>
+            </p>
+            <p class="detalle">{s.detalle}</p>
+          </div>
+        ))
+      }
+
+      <div class="item extra">
+        <svg class="flecha-abajo" viewBox="0 0 14 40" aria-hidden="true">
+          <path d="M7 0v36M2 31l5 6 5-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        <p class="cmd"><span class="prompt" aria-hidden="true">❯</span><span>Todo lo que necesites</span></p>
+        <p class="detalle"><span id="idea">Lo que se te ocurra</span><span class="cursor" aria-hidden="true"></span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../scripts/tipeo';
+</script>
+
+<style>
+  .mapa { display: grid; position: relative; }
+
+  .nodo { display: flex; align-items: center; gap: 14px; padding-bottom: 18px; }
+  .chip {
+    display: block;
+    flex: none;
+    width: 56px;
+    height: 56px;
+    border-radius: 27.5%;
+    box-shadow: 0 0 40px rgb(94 234 212 / 0.35), 0 0 120px rgb(94 234 212 / 0.16);
+  }
+  .chip :global(.logo) { width: 100%; height: 100%; }
+  .nodo-texto { font: 14px var(--f-mono); color: var(--suave); }
+  .nodo-texto b { color: var(--texto); font-weight: 400; }
+  .ramas { display: none; }
+
+  /* Celu: árbol con una rama por ítem; el último cierra en └ */
+  .item { position: relative; margin-left: 27px; padding: 12px 0 18px 30px; min-width: 0; }
+  .item::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; border-left: 1px solid var(--linea); }
+  .item::after { content: ''; position: absolute; left: 0; top: 25px; width: 20px; border-top: 1px solid var(--linea); }
+  .item:last-child::before { bottom: auto; height: 25px; }
+  .punta, .flecha-abajo { display: none; }
+
+  .cmd { display: flex; gap: 10px; align-items: baseline; font: clamp(16px, 1.5vw, 19px) / 1.35 var(--f-mono); color: var(--texto); }
+  .prompt { color: var(--turquesa); flex: none; }
+  .detalle { font: 14px / 1.55 var(--f-mono); color: var(--suave); margin-top: 6px; padding-left: 22px; }
+  .item:hover .cmd { text-shadow: 0 0 18px rgb(94 234 212 / 0.45); }
+  .extra .detalle { color: var(--turquesa); }
+
+  .tipeo.escribiendo::after,
+  .tipeo.esperando::after,
+  .cursor {
+    content: '';
+    display: inline-block;
+    width: 0.55em;
+    height: 1.05em;
+    margin-left: 2px;
+    vertical-align: -0.15em;
+    background: var(--turquesa);
+    animation: titila 1s steps(1) infinite;
+  }
+
+  .base { fill: none; stroke: rgb(154 171 194 / 0.22); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+  .flujo {
+    fill: none;
+    stroke: var(--turquesa);
+    stroke-width: 1.6;
+    stroke-dasharray: 4 16;
+    vector-effect: non-scaling-stroke;
+    opacity: 0.85;
+    animation: flujo 2.6s linear infinite;
+  }
+  @keyframes flujo { to { stroke-dashoffset: -40; } }
+
+  /* Escritorio: tres ítems por lado, logo al medio con ramas dibujadas y flecha hacia "Todo lo que necesites" */
+  @media (min-width: 960px) {
+    .mapa {
+      grid-template-columns: minmax(0, 1fr) 220px minmax(0, 1fr);
+      grid-template-rows: repeat(3, minmax(132px, auto)) auto;
+    }
+    .nodo { grid-column: 2; grid-row: 1 / 4; padding: 0; justify-content: center; position: relative; }
+    /* preserveAspectRatio="none": las ramas se estiran para tocar el centro de cada fila */
+    .ramas { display: block; position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+    .chip { position: relative; z-index: 1; width: 96px; height: 96px; }
+    .nodo-texto { display: none; }
+
+    .item { margin: 0; padding: 0; align-self: center; }
+    .item::before, .item::after { display: none; }
+    .izq { grid-column: 1; text-align: right; padding-right: 26px; }
+    .der { grid-column: 3; padding-left: 26px; }
+    .izq .cmd { justify-content: flex-end; }
+    .izq .detalle { padding-left: 0; margin-left: auto; max-width: 34ch; }
+    .der .detalle { max-width: 34ch; }
+    .f1 { grid-row: 1; }
+    .f2 { grid-row: 2; }
+    .f3 { grid-row: 3; }
+    .punta {
+      display: block;
+      position: absolute;
+      top: 50%;
+      width: 7px;
+      height: 7px;
+      margin-top: -3.5px;
+      border-radius: 50%;
+      background: var(--turquesa);
+      box-shadow: 0 0 12px var(--turquesa);
+    }
+    .izq .punta { right: -3.5px; }
+    .der .punta { left: -3.5px; }
+
+    .extra { grid-column: 1 / -1; grid-row: 4; justify-self: center; text-align: center; padding-top: 46px; }
+    .extra .cmd { justify-content: center; font-size: clamp(19px, 1.8vw, 23px); }
+    .extra .detalle { padding-left: 0; min-height: 1.6em; }
+    .flecha-abajo { display: block; position: absolute; top: 0; left: 50%; width: 14px; height: 40px; margin-left: -7px; color: var(--turquesa); }
+  }
+</style>

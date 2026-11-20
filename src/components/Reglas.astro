@@ -1,0 +1,86 @@
+---
+import { tonos } from '../lib/tonos';
+
+// Cada par compara lo mismo visto desde una app genérica y desde un sistema a medida.
+const pares = [
+  {
+    generica: 'Pagás por un montón de funciones que no usás, y justo la que necesitás no está.',
+    medida: 'Tiene lo que tu negocio usa. Ni más, ni menos.',
+  },
+  {
+    generica: 'Lo que hacés distinto queda afuera y termina otra vez en el cuaderno.',
+    medida: 'Respeta tus descuentos, tus cobros, tu agenda y tus pagos tal como los hacés hoy.',
+  },
+  {
+    generica: 'Para un cambio chico, esperás a que lo agreguen en alguna actualización.',
+    medida: 'Si mañana necesitás algo nuevo, se suma.',
+  },
+  {
+    generica: 'Si algo falla, escribís a un soporte que no conoce tu negocio.',
+    medida: 'Alguien de la zona te atiende cuando lo necesitás.',
+  },
+];
+---
+
+<section class="seccion" id="por-que" {...tonos.navy} aria-labelledby="t-reglas">
+  <div class="envoltura">
+    <div class="cabecera revela">
+      <h2 id="t-reglas">Tu negocio tiene sus reglas</h2>
+    </div>
+    <div class="comparacion revela">
+      <div class="encabezado" aria-hidden="true"><span>App genérica</span><span></span><span>A medida</span></div>
+      <div class="par tesis">
+        <p class="gen"><span class="marca" aria-hidden="true">✕</span><span><span class="sr">App genérica: </span>Te adaptás vos a la aplicación.</span></p>
+        <span class="va" aria-hidden="true">→</span>
+        <p class="med"><span class="marca" aria-hidden="true">✓</span><span><span class="sr">A medida: </span>La aplicación se adapta <em>a vos.</em></span></p>
+      </div>
+      {
+        pares.map((p) => (
+          <div class="par">
+            <p class="gen"><span class="marca" aria-hidden="true">✕</span><span>{p.generica}</span></p>
+            <span class="va" aria-hidden="true">→</span>
+            <p class="med"><span class="marca" aria-hidden="true">✓</span><span>{p.medida}</span></p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .comparacion { display: grid; }
+  .encabezado, .va { display: none; }
+  .par { display: grid; gap: 10px; padding-block: 22px; border-top: 1px solid var(--linea); }
+  .par:last-child { border-bottom: 1px solid var(--linea); }
+  .gen, .med { display: flex; gap: 12px; align-items: baseline; min-width: 0; }
+  .gen { color: var(--tenue); font-size: 15px; }
+  .med { color: var(--texto); font-size: clamp(17px, 1.5vw, 19px); }
+  .marca { flex: none; font: 14px var(--f-mono); color: var(--tenue); }
+  .med .marca { color: var(--turquesa); }
+
+  .tesis .gen { font-size: clamp(18px, 2vw, 24px); }
+  .tesis .med {
+    font-family: var(--f-display);
+    font-weight: var(--d-peso);
+    letter-spacing: -0.02em;
+    font-size: clamp(24px, 3vw, 36px);
+    line-height: 1.1;
+  }
+  .tesis em { font-style: normal; color: var(--turquesa); }
+
+  @media (min-width: 760px) {
+    .par { grid-template-columns: 1fr 56px 1fr; align-items: baseline; gap: 0; padding-block: 26px; }
+    .gen { font-size: 16px; }
+    .va { display: block; text-align: center; color: var(--tenue); font-family: var(--f-mono); }
+    .encabezado {
+      display: grid;
+      grid-template-columns: 1fr 56px 1fr;
+      padding-bottom: 14px;
+      font: 13px var(--f-mono);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--tenue);
+    }
+    .encabezado span:last-child { color: var(--turquesa); }
+  }
+</style>

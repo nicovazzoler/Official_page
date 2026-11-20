@@ -1,0 +1,20 @@
+---
+// Ícono de la marca: una v con el cursor de la terminal.
+interface Props {
+  tamano?: number;
+  titila?: boolean;
+  class?: string;
+}
+const { tamano = 38, titila = false, class: clase } = Astro.props;
+---
+
+<svg class:list={['logo', clase]} width={tamano} height={tamano} viewBox="0 0 40 40" aria-hidden="true">
+  <rect x=".5" y=".5" width="39" height="39" rx="10.5" fill="#0D1117" stroke="#2A3340"></rect>
+  <path d="M9.5 14.5l5.5 11.5 5.5-11.5" fill="none" stroke="#5EEAD4" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"></path>
+  <rect class:list={[titila && 'cursor']} x="23.5" y="22.5" width="8" height="3.6" rx="1" fill="#D4EE5E"></rect>
+</svg>
+
+<style>
+  .logo { display: block; flex: none; border-radius: 27.5%; }
+  .cursor { animation: titila 1.1s steps(1) infinite; }
+</style>

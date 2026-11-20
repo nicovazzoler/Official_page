@@ -1,0 +1,51 @@
+---
+import Marca from './Marca.astro';
+import Cta from './Cta.astro';
+import { sitio } from '../datos/sitio';
+---
+
+<header class="barra" id="barra">
+  <div class="envoltura">
+    <Marca etiqueta={`${sitio.nombre}, inicio`} />
+    <nav class="menu" aria-label="Secciones">
+      <a href="#servicios">Servicios</a>
+      <a href="#trabajos">Trabajos</a>
+      <a href="#como-trabajo">Cómo trabajo</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <Cta href={sitio.whatsapp} variante="mini" etiqueta="Escribime por WhatsApp">Escribime</Cta>
+  </div>
+</header>
+
+<script>
+  // La barra toma fondo apenas se scrollea.
+  const barra = document.getElementById('barra');
+  if (barra) {
+    const actualizar = () => barra.classList.toggle('con-fondo', scrollY > 8);
+    addEventListener('scroll', actualizar, { passive: true });
+    actualizar();
+  }
+</script>
+
+<style>
+  .barra {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 30;
+    border-bottom: 1px solid transparent;
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+  .barra.con-fondo {
+    background: rgb(5 10 20 / 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom-color: var(--linea);
+  }
+  .envoltura { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 72px; }
+  .menu { display: none; gap: 28px; font-size: 15px; color: var(--suave); }
+  .menu a { text-decoration: none; transition: color 0.2s; }
+  .menu a:hover { color: var(--texto); }
+  @media (min-width: 960px) {
+    .menu { display: flex; }
+  }
+</style>

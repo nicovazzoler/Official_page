@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import Proyecto from './Proyecto.astro';
+import { tonos } from '../lib/tonos';
+
+const proyectos = (await getCollection('proyectos')).sort((a, b) => a.data.orden - b.data.orden);
+---
+
+<section class="seccion" id="trabajos" aria-labelledby="t-trabajos">
+  <div class="envoltura">
+    <div class="cabecera revela" {...tonos.navy}>
+      <h2 id="t-trabajos">Ya está andando</h2>
+      <p>Sistemas que se usan todos los días y uno propio que está en desarrollo. Deslizá las capturas para verlos por dentro.</p>
+    </div>
+    <div class="proyectos">
+      {proyectos.map((p) => <Proyecto proyecto={p} />)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .proyectos { display: grid; gap: clamp(96px, 12vw, 160px); }
+</style>

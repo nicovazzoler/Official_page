@@ -1,0 +1,52 @@
+---
+// Llamada a la acción: texto grande sin caja, con una línea que se completa al pasar.
+interface Props {
+  href: string;
+  variante?: 'principal' | 'secundaria' | 'mini';
+  // Solo hace falta cuando el texto visible no alcanza para entender adónde lleva.
+  etiqueta?: string;
+}
+const { href, variante = 'principal', etiqueta } = Astro.props;
+const externo = href.startsWith('http');
+---
+
+<a
+  class:list={['cta', variante]}
+  href={href}
+  target={externo ? '_blank' : undefined}
+  rel={externo ? 'noopener' : undefined}
+  aria-label={etiqueta}><slot /> <span class="flecha" aria-hidden="true">↗</span></a
+>
+
+<style>
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 100%;
+    color: var(--texto);
+    text-decoration: none;
+    font-family: var(--f-display);
+    font-weight: var(--d-peso);
+    letter-spacing: -0.02em;
+    font-size: clamp(21px, 2vw, 27px);
+    line-height: 1.2;
+    padding-bottom: 8px;
+    background: linear-gradient(var(--turquesa), var(--turquesa)) 0 100% / 34% 2px no-repeat;
+    transition: background-size 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .cta:hover { background-size: 100% 2px; }
+  .flecha { color: var(--turquesa); transition: transform 0.3s ease; }
+  .cta:hover .flecha { transform: translate(3px, -3px); }
+
+  .secundaria {
+    color: var(--suave);
+    font-size: clamp(17px, 1.6vw, 20px);
+    background-image: linear-gradient(var(--tenue), var(--tenue));
+  }
+  .mini {
+    font: 500 15px / 1.2 var(--f-cuerpo);
+    letter-spacing: 0;
+    padding-bottom: 5px;
+  }
+</style>

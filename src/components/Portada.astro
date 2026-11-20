@@ -1,0 +1,71 @@
+---
+import Robot from './Robot.astro';
+import Cta from './Cta.astro';
+import { sitio } from '../datos/sitio';
+import { tonos } from '../lib/tonos';
+---
+
+<section class="envoltura portada" {...tonos.negro} aria-labelledby="titular">
+  <div class="escena entra">
+    <canvas id="malla" aria-hidden="true"></canvas>
+    <Robot id="robot-portada" saluda class="robot-portada" />
+  </div>
+
+  <div class="texto">
+    <h1 class="titular" id="titular">
+      <span class="entra">Modernizá</span>
+      <span class="entra d1">tu gestión,</span>
+      <span class="entra d2 acento">a medida.</span>
+    </h1>
+    <p class="bajada entra d3">
+      Sistemas, páginas web y automatizaciones para comercios, hechos para la forma en que ya trabaja tu negocio.
+    </p>
+    <div class="acciones entra d4">
+      <Cta href={sitio.whatsapp}>Escribime por WhatsApp</Cta>
+      <a class="ver" href="#trabajos">Ver trabajos <span aria-hidden="true">↓</span></a>
+    </div>
+    <p class="zona entra d4">
+      <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"></path><circle cx="12" cy="9" r="2.5"></circle></svg>
+      {sitio.zona}
+    </p>
+  </div>
+</section>
+
+<script>
+  import '../scripts/malla';
+</script>
+
+<style>
+  .portada { display: grid; gap: 8px; padding-block: 8px 72px; }
+
+  .escena { position: relative; width: min(100%, 340px); aspect-ratio: 1; margin: 0 auto; }
+  .escena::before {
+    content: '';
+    position: absolute;
+    inset: 14%;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgb(212 238 94 / 0.1), transparent);
+    filter: blur(10px);
+  }
+  .escena canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .escena :global(.robot-portada) { position: absolute; width: 64%; left: 18%; top: 7%; }
+  .escena.entra { animation-name: entra-robot; animation-duration: 1.2s; }
+  @keyframes entra-robot { from { transform: scale(0.94); opacity: 0.4; } }
+
+  .texto { display: grid; gap: 26px; min-width: 0; }
+  .titular { font-size: clamp(46px, 7vw, 100px); line-height: 0.98; }
+  .titular span { display: block; }
+  .bajada { font-size: clamp(17px, 1.6vw, 20px); color: var(--suave); max-width: 40ch; }
+  .acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 26px; }
+  .ver { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--suave); text-decoration: none; font-size: 16px; }
+  .ver span { transition: transform 0.2s; }
+  .ver:hover { color: var(--texto); }
+  .ver:hover span { transform: translateY(3px); }
+  .zona { display: inline-flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--suave); letter-spacing: 0.02em; }
+  .zona svg { color: var(--turquesa); }
+
+  @media (min-width: 960px) {
+    .portada { grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); align-items: center; gap: 32px; padding-block: 32px 24px; }
+    .escena { order: 2; width: min(100%, 540px); }
+  }
+</style>
