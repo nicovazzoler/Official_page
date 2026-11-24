@@ -11,9 +11,9 @@ const { nombre, capturas } = Astro.props;
 
 // Ancho en pantalla de cada tipo, para que el navegador baje el tamaño justo.
 const tamanos = {
-  compu: { widths: [480, 720, 960, 1280, 1600], sizes: '(min-width: 960px) 640px, (min-width: 760px) 58vw, 86vw' },
-  celu: { widths: [240, 400, 600], sizes: '(min-width: 960px) 200px, 30vw' },
-  papel: { widths: [300, 500, 700], sizes: '(min-width: 960px) 340px, 50vw' },
+  compu: { widths: [480, 720, 960, 1280, 1600], sizes: '(min-width: 1180px) 920px, (min-width: 960px) 78vw, 86vw' },
+  celu: { widths: [240, 400, 600], sizes: '(min-width: 960px) 280px, 30vw' },
+  papel: { widths: [300, 500, 700], sizes: '(min-width: 960px) 420px, 50vw' },
 };
 ---
 
@@ -71,7 +71,7 @@ const tamanos = {
   }
   .carril::-webkit-scrollbar { display: none; }
 
-  /* En el celu la diapositiva no ocupa todo el ancho: se ve el borde de la siguiente e invita a deslizar */
+  /* La diapositiva no ocupa todo el ancho: se ve el borde de la siguiente e invita a deslizar */
   .slide {
     flex: 0 0 86%;
     scroll-snap-align: start;
@@ -143,7 +143,10 @@ const tamanos = {
   .flecha:disabled { opacity: 0.3; cursor: default; }
 
   @media (min-width: 760px) {
-    .slide { flex-basis: 100%; }
     .flecha { display: grid; }
+  }
+  @media (min-width: 960px) {
+    .carril { gap: 16px; }
+    .slide { flex-basis: 80%; }
   }
 </style>

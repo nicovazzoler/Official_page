@@ -12,35 +12,40 @@ const { Content } = await render(proyecto);
 ---
 
 <article class="proyecto revela" style={`--tinte: ${color}`} {...tonoDeProyecto(color)}>
-  <Galeria nombre={nombre} capturas={capturas} />
   <div class="texto">
-    <p class="rubro">{rubro}</p>
-    <h3>{nombre}</h3>
-    <p class="estado"><i></i>{estado}</p>
-    <div class="descripcion"><Content /></div>
-    {
-      datos.length > 0 && (
-        <dl class="datos">
-          {datos.map((d) => (
-            <>
-              <dt>{d.etiqueta}</dt>
-              <dd>{d.valor}</dd>
-            </>
-          ))}
-        </dl>
-      )
-    }
+    <div class="titulo">
+      <p class="rubro">{rubro}</p>
+      <h3>{nombre}</h3>
+      <p class="estado"><i></i>{estado}</p>
+    </div>
+    <div class="cuerpo">
+      <div class="descripcion"><Content /></div>
+      {
+        datos.length > 0 && (
+          <dl class="datos">
+            {datos.map((d) => (
+              <>
+                <dt>{d.etiqueta}</dt>
+                <dd>{d.valor}</dd>
+              </>
+            ))}
+          </dl>
+        )
+      }
+    </div>
   </div>
+  <Galeria nombre={nombre} capturas={capturas} />
 </article>
 
 <style>
-  .proyecto { display: grid; gap: 28px; align-items: center; }
-  .texto { display: grid; gap: 18px; align-content: start; min-width: 0; }
+  /* Primero quién es y qué hace; abajo, las capturas */
+  .proyecto { display: grid; gap: 28px; }
+  .texto, .titulo, .cuerpo { display: grid; gap: 18px; align-content: start; min-width: 0; }
   .rubro { font: 13px var(--f-mono); color: var(--tinte); letter-spacing: 0.04em; text-transform: uppercase; }
   h3 { font-size: clamp(34px, 4vw, 52px); }
   .estado { display: inline-flex; align-items: center; gap: 10px; font: 13px var(--f-mono); color: var(--suave); }
   .estado i { width: 8px; height: 8px; border-radius: 50%; background: var(--tinte); color: var(--tinte); animation: onda 2.2s ease-out infinite; }
-  .descripcion { color: var(--suave); max-width: 46ch; }
+  .descripcion { color: var(--suave); max-width: 60ch; }
   .descripcion :global(p + p) { margin-top: 1em; }
   .datos {
     display: grid;
@@ -54,10 +59,9 @@ const { Content } = await render(proyecto);
   dt { font: 12.5px / 1.9 var(--f-mono); color: var(--tenue); }
   dd { margin: 0; color: var(--texto); }
 
-  /* Escritorio: galería ancha y texto al costado, alternando de lado proyecto por medio */
-  @media (min-width: 760px) {
-    .proyecto { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 56px; }
-    .proyecto:nth-child(even) { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
-    .proyecto:nth-child(even) :global(.galeria) { order: 2; }
+  /* Escritorio: el nombre a la izquierda y la descripción a la derecha, la galería ancha abajo */
+  @media (min-width: 960px) {
+    .proyecto { gap: 40px; }
+    .texto { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; }
   }
 </style>
