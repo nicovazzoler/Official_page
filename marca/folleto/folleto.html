@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<title>Folleto Vazzoler A6</title>
+<!--
+  Folleto A6 (105 × 148 mm) frente y dorso, con los colores y tipografías de la página.
+  Cada cara se dibuja con 3 mm de sangrado (111 × 154 mm). El script del final la acomoda según ?modo=:
+    vista     las dos caras recortadas, para mirar en pantalla (por defecto)
+    imprenta  una cara por hoja, con sangrado y marcas de corte
+    a4        4 frentes en una hoja A4 y 4 dorsos en la otra, al tamaño exacto
+  generar.mjs abre este archivo con cada modo y guarda los PDF.
+-->
+<style>
+@font-face { font-family: 'Space Grotesk'; src: url('../../node_modules/@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2') format('woff2'); font-weight: 300 700; }
+@font-face { font-family: 'Space Mono'; src: url('../../node_modules/@fontsource/space-mono/files/space-mono-latin-400-normal.woff2') format('woff2'); font-weight: 400; }
+@font-face { font-family: 'Space Mono'; src: url('../../node_modules/@fontsource/space-mono/files/space-mono-latin-700-normal.woff2') format('woff2'); font-weight: 700; }
+
+:root {
+  --negro: #030405;
+  --navy: #060E1E;
+  --texto: #EEF3F8;
+  --suave: #A9B8CC;
+  --linea: rgb(154 171 194 / 0.28);
+  --turquesa: #5EEAD4;
+  --lima: #D4EE5E;
+  --display: 'Space Grotesk', sans-serif;
+  --mono: 'Space Mono', monospace;
+  --margen: 6.5mm; /* zona segura: nada importante más cerca del corte */
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { -webkit-print-color-adjust: exact; print-color-adjust: exact; font-family: var(--display); color: var(--texto); }
+h1, h2, p { margin: 0; }
+
+/* Una cara con sangrado; .recorte es el A6 final */
+.cara { position: relative; width: 111mm; height: 154mm; overflow: hidden; }
+.recorte { position: absolute; left: 3mm; top: 3mm; width: 105mm; height: 148mm; }
+
+/* ---------- Frente ---------- */
+.frente {
+  background:
+    radial-gradient(42mm 42mm at 55.5mm 54mm, rgb(212 238 94 / 0.13), transparent 100%),
+    radial-gradient(60mm 50mm at 0mm 154mm, rgb(60 110 230 / 0.22), transparent 100%),
+    var(--negro);
+}
+.cabecera { position: absolute; left: var(--margen); right: var(--margen); top: var(--margen); display: flex; justify-content: space-between; align-items: center; }
+.marca { display: flex; align-items: center; gap: 2.4mm; }
+.marca svg { width: 9.5mm; height: 9.5mm; }
+.marca b { display: block; font-weight: 600; font-size: 14pt; letter-spacing: -0.03em; line-height: 1; }
+.marca small { display: block; font-size: 6.5pt; color: var(--suave); margin-top: 0.8mm; letter-spacing: 0.02em; }
+.zona { display: flex; align-items: center; gap: 1.2mm; font-size: 7.5pt; color: var(--suave); }
+.zona svg { width: 3.4mm; height: 3.4mm; color: var(--turquesa); }
+
+.escena { position: absolute; left: 50%; top: 14mm; width: 76mm; height: 76mm; transform: translateX(-50%); }
+.escena .esfera { position: absolute; inset: 0; width: 100%; height: 100%; }
+.escena .robot { position: absolute; left: 50%; top: 5.5mm; width: 49mm; transform: translateX(-50%); }
+
+.texto-frente { position: absolute; left: var(--margen); right: var(--margen); bottom: var(--margen); display: grid; gap: 3.2mm; }
+.titular { font-weight: 600; font-size: 29pt; line-height: 0.98; letter-spacing: -0.05em; }
+.titular span { display: block; }
+.acento { color: var(--turquesa); }
+.bajada { font-size: 8.5pt; line-height: 1.4; color: var(--suave); max-width: 80mm; }
+.web { display: flex; align-items: center; gap: 1.6mm; font: 700 8pt var(--mono); color: var(--turquesa); }
+.web svg { width: 3mm; height: 3mm; }
+
+/* ---------- Dorso ---------- */
+.dorso {
+  background:
+    radial-gradient(60mm 46mm at 111mm 0mm, rgb(60 110 230 / 0.26), transparent 100%),
+    radial-gradient(50mm 40mm at 0mm 154mm, rgb(94 234 212 / 0.10), transparent 100%),
+    var(--navy);
+}
+.contenido-dorso { position: absolute; inset: var(--margen); display: flex; flex-direction: column; }
+.dorso h2 { font-weight: 600; font-size: 17pt; line-height: 1.02; letter-spacing: -0.045em; }
+.dorso .intro { margin-top: 2mm; font-size: 7.8pt; line-height: 1.4; color: var(--suave); }
+
+/* Árbol de servicios, igual que la página en el celu */
+.arbol { margin-top: 5.5mm; }
+.raiz { display: flex; align-items: center; gap: 2mm; font: 7pt var(--mono); color: var(--suave); }
+.raiz svg { width: 5.5mm; height: 5.5mm; }
+.raiz b { color: var(--texto); font-weight: 400; }
+.items { list-style: none; margin: 0 0 0 2.7mm; padding: 0; }
+.items li { position: relative; padding: 2.1mm 0 2.2mm 5.2mm; }
+.items li::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; border-left: 0.25mm solid var(--linea); }
+.items li::after { content: ''; position: absolute; left: 0; top: 4.2mm; width: 3.4mm; border-top: 0.25mm solid var(--linea); }
+.items li:last-child::before { bottom: auto; height: 4.2mm; }
+.cmd { display: flex; align-items: center; gap: 1.6mm; font: 9pt / 1.25 var(--mono); }
+.cmd svg { flex: none; width: 2.2mm; height: 2.2mm; color: var(--turquesa); }
+.det { font: 7pt / 1.35 var(--mono); color: var(--suave); padding-left: 3.8mm; margin-top: 0.4mm; }
+.extra .cmd, .extra .det { color: var(--turquesa); }
+.cursor { display: inline-block; width: 1.5mm; height: 2.8mm; margin-left: 0.6mm; vertical-align: -0.5mm; background: var(--turquesa); }
+
+/* QR y contacto */
+.contacto { margin-top: auto; display: flex; align-items: center; gap: 4mm; }
+.qr { flex: none; width: 29mm; height: 29mm; padding: 2.4mm; border-radius: 2.6mm; background: #FFFFFF; }
+.qr svg { display: block; width: 100%; height: 100%; }
+.datos { display: grid; gap: 2mm; min-width: 0; }
+.datos b { font-weight: 600; font-size: 10.5pt; line-height: 1.12; letter-spacing: -0.02em; }
+.linea-dato { display: flex; align-items: center; gap: 1.6mm; font: 7.6pt var(--mono); color: var(--suave); }
+.linea-dato svg { flex: none; width: 3.4mm; height: 3.4mm; color: var(--turquesa); }
+.linea-dato.web-dorso { color: var(--turquesa); font-weight: 700; }
+
+/* ---------- Modos ---------- */
+.vista { background: #2B2F36; display: flex; flex-wrap: wrap; gap: 10mm; padding: 10mm; }
+.ventana { position: relative; width: 105mm; height: 148mm; overflow: hidden; }
+.ventana .cara { position: absolute; left: -3mm; top: -3mm; }
+.vista .ventana { box-shadow: 0 2mm 8mm rgb(0 0 0 / 0.5); }
+
+.hoja { position: relative; overflow: hidden; break-after: page; }
+.hoja:last-child { break-after: auto; }
+.hoja-imprenta { width: 121mm; height: 164mm; background: #FFFFFF; }
+.hoja-imprenta .cara { position: absolute; left: 5mm; top: 5mm; }
+.marca-corte { position: absolute; background: #000000; }
+.hoja-a4 { width: 210mm; height: 297mm; background: #FFFFFF; display: grid; grid-template-columns: 105mm 105mm; grid-auto-rows: 148mm; align-content: start; }
+</style>
+</head>
+<body>
+
+<template id="frente">
+  <div class="cara frente">
+    <div class="recorte">
+      <div class="cabecera">
+        <div class="marca">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect x=".5" y=".5" width="39" height="39" rx="10.5" fill="#0D1117" stroke="#2A3340"></rect><path d="M9.5 14.5l5.5 11.5 5.5-11.5" fill="none" stroke="#5EEAD4" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"></path><rect x="23.5" y="22.5" width="8" height="3.6" rx="1" fill="#D4EE5E"></rect></svg>
+          <span><b>Vazzoler</b><small>Soluciones digitales</small></span>
+        </div>
+        <span class="zona"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"></path><circle cx="12" cy="9" r="2.5"></circle></svg>Zona oeste</span>
+      </div>
+
+      <div class="escena">
+        <svg class="esfera" viewBox="0 0 540 540" aria-hidden="true"></svg>
+        <!-- Robot de la marca, sin filtros: en papel todo queda vectorial y nítido -->
+        <svg class="robot" viewBox="0 0 360 420" role="img" aria-label="Robot saludando">
+          <ellipse cx="180" cy="398" rx="92" ry="11" fill="#D4EE5E" opacity=".14"></ellipse>
+          <path d="M180 74V38" stroke="#E4DDCB" stroke-width="3.5" stroke-linecap="round"></path>
+          <circle cx="180" cy="30" r="17" fill="#D4EE5E" opacity=".22"></circle>
+          <circle cx="180" cy="30" r="9" fill="#D4EE5E"></circle>
+          <path d="M72 134h20M268 134h20" stroke="#E4DDCB" stroke-width="3.5" stroke-linecap="round"></path>
+          <path d="M108 262C82 264 72 296 76 332" fill="none" stroke="#ECE6D8" stroke-width="3.5" stroke-linecap="round"></path>
+          <circle cx="76" cy="342" r="11" fill="#E8A55C"></circle>
+          <path d="M252 262C282 260 300 238 304 206" fill="none" stroke="#ECE6D8" stroke-width="3.5" stroke-linecap="round"></path>
+          <circle cx="305" cy="195" r="11" fill="#4FCDB4"></circle>
+          <rect x="158" y="206" width="44" height="26" rx="5" fill="#3A3A3F"></rect>
+          <clipPath id="torso-folleto"><rect x="105" y="228" width="150" height="120" rx="28"></rect></clipPath>
+          <g clip-path="url(#torso-folleto)">
+            <rect x="105" y="228" width="72.5" height="57.5" rx="6" fill="#DDB35C"></rect>
+            <rect x="182.5" y="228" width="72.5" height="57.5" rx="6" fill="#86B6F2"></rect>
+            <rect x="105" y="290.5" width="72.5" height="57.5" rx="6" fill="#C9C6BA"></rect>
+            <rect x="182.5" y="290.5" width="72.5" height="57.5" rx="6" fill="#4FCDB4"></rect>
+            <g fill="#000" fill-opacity=".28">
+              <circle cx="121" cy="243" r="2.6"></circle><circle cx="129" cy="243" r="2.6"></circle><circle cx="137" cy="243" r="2.6"></circle>
+              <circle cx="198.5" cy="243" r="2.6"></circle><circle cx="206.5" cy="243" r="2.6"></circle><circle cx="214.5" cy="243" r="2.6"></circle>
+              <circle cx="121" cy="305.5" r="2.6"></circle><circle cx="129" cy="305.5" r="2.6"></circle><circle cx="137" cy="305.5" r="2.6"></circle>
+              <circle cx="198.5" cy="305.5" r="2.6"></circle><circle cx="206.5" cy="305.5" r="2.6"></circle><circle cx="214.5" cy="305.5" r="2.6"></circle>
+              <rect x="118" y="254" width="42" height="3.6" rx="1.8"></rect><rect x="118" y="263" width="28" height="3.6" rx="1.8"></rect>
+              <rect x="195.5" y="254" width="42" height="3.6" rx="1.8"></rect><rect x="195.5" y="263" width="20" height="3.6" rx="1.8"></rect>
+              <rect x="118" y="316.5" width="42" height="3.6" rx="1.8"></rect><rect x="118" y="325.5" width="22" height="3.6" rx="1.8"></rect>
+              <rect x="195.5" y="316.5" width="42" height="3.6" rx="1.8"></rect><rect x="195.5" y="325.5" width="30" height="3.6" rx="1.8"></rect>
+            </g>
+          </g>
+          <rect x="92" y="72" width="176" height="136" rx="36" fill="#E4DDCB"></rect>
+          <rect x="114" y="100" width="132" height="62" rx="31" fill="#0B0B0C"></rect>
+          <circle cx="153" cy="131" r="17" fill="#D4EE5E" opacity=".2"></circle>
+          <circle cx="207" cy="131" r="17" fill="#D4EE5E" opacity=".2"></circle>
+          <circle cx="153" cy="131" r="11" fill="#D4EE5E"></circle>
+          <circle cx="207" cy="131" r="11" fill="#D4EE5E"></circle>
+          <path d="M168 180q12 9 24 0" fill="none" stroke="#2B2A28" stroke-width="3.5" stroke-linecap="round"></path>
+        </svg>
+      </div>
+
+      <div class="texto-frente">
+        <h1 class="titular"><span>Modernizá</span><span>tu gestión,</span><span class="acento">a medida.</span></h1>
+        <p class="bajada">Sistemas, páginas web y automatizaciones hechos para la forma en que ya trabaja tu negocio.</p>
+        <p class="web">vazzoler.com.ar<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></p>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="dorso">
+  <div class="cara dorso">
+    <div class="recorte">
+      <div class="contenido-dorso">
+        <h2>Sacate trabajo de encima</h2>
+        <p class="intro">Lo que hoy hacés a mano, en papel o en tres planillas distintas, se puede hacer solo.</p>
+
+        <div class="arbol">
+          <p class="raiz">
+            <svg viewBox="0 0 40 40" aria-hidden="true"><rect x=".5" y=".5" width="39" height="39" rx="10.5" fill="#0D1117" stroke="#2A3340"></rect><path d="M9.5 14.5l5.5 11.5 5.5-11.5" fill="none" stroke="#5EEAD4" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"></path><rect x="23.5" y="22.5" width="8" height="3.6" rx="1" fill="#D4EE5E"></rect></svg>
+            <span><b>Vazzoler</b> ~ servicios</span>
+          </p>
+          <ul class="items">
+            <li><p class="cmd"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M3 1.5 6.5 5 3 8.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>Sistemas de gestión</p><p class="det">Ventas, caja, stock y sueldos en una sola app</p></li>
+            <li><p class="cmd"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M3 1.5 6.5 5 3 8.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>Turnos y agenda</p><p class="det">Reservas, señas y recordatorios sin cuaderno</p></li>
+            <li><p class="cmd"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M3 1.5 6.5 5 3 8.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>Cuentas corrientes</p><p class="det">Quién te debe, cuánto y desde cuándo</p></li>
+            <li><p class="cmd"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M3 1.5 6.5 5 3 8.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>Páginas web y catálogos</p><p class="det">Tu negocio en Google, con botón a WhatsApp</p></li>
+            <li><p class="cmd"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M3 1.5 6.5 5 3 8.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>Automatizaciones</p><p class="det">Planillas, PDFs y reportes que se arman solos</p></li>
+            <li class="extra"><p class="cmd"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M3 1.5 6.5 5 3 8.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>Todo lo que necesites<span class="cursor"></span></p></li>
+          </ul>
+        </div>
+
+        <div class="contacto">
+          <div class="qr">
+            <svg viewBox="0 0 25 25" shape-rendering="crispEdges" role="img" aria-label="Código QR a vazzoler.com.ar"><path stroke="#060E1E" d="M0 0.5h7m4 0h1m2 0h2m2 0h7M0 1.5h1m5 0h1m1 0h1m1 0h1m1 0h1m2 0h1m2 0h1m5 0h1M0 2.5h1m1 0h3m1 0h1m2 0h1m1 0h1m3 0h1m2 0h1m1 0h3m1 0h1M0 3.5h1m1 0h3m1 0h1m3 0h3m1 0h1m3 0h1m1 0h3m1 0h1M0 4.5h1m1 0h3m1 0h1m1 0h3m2 0h4m1 0h1m1 0h3m1 0h1M0 5.5h1m5 0h1m4 0h1m2 0h2m2 0h1m5 0h1M0 6.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 7.5h1m2 0h3M0 8.5h1m1 0h1m1 0h1m1 0h1m2 0h1m2 0h2m6 0h1m2 0h1M2 9.5h3m7 0h1m3 0h3m5 0h1M1 10.5h1m1 0h4m3 0h2m6 0h1m3 0h3M1 11.5h1m2 0h2m1 0h1m1 0h1m1 0h6m6 0h1M0 12.5h1m2 0h1m1 0h2m5 0h3m1 0h4m1 0h1m1 0h2M5 13.5h1m1 0h2m1 0h3m3 0h1m1 0h1m2 0h1m2 0h1M0 14.5h1m1 0h5m4 0h3m2 0h1m2 0h1m2 0h3M1 15.5h3m1 0h1m2 0h2m2 0h2m1 0h4m1 0h1m2 0h1M0 16.5h1m2 0h1m2 0h2m2 0h2m1 0h1m1 0h7M8 17.5h2m1 0h1m1 0h1m1 0h2m3 0h2m1 0h2M0 18.5h7m2 0h1m4 0h3m1 0h1m1 0h2m1 0h2M0 19.5h1m5 0h1m2 0h1m1 0h1m1 0h2m1 0h1m3 0h2m2 0h1M0 20.5h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h2m2 0h6m1 0h2M0 21.5h1m1 0h3m1 0h1m4 0h4m1 0h1m2 0h4M0 22.5h1m1 0h3m1 0h1m1 0h2m1 0h5m1 0h1m2 0h1m3 0h1M0 23.5h1m5 0h1m3 0h1m1 0h2m1 0h4m1 0h2m1 0h1M0 24.5h7m1 0h2m1 0h2m1 0h3m2 0h1m3 0h2"></path></svg>
+          </div>
+          <div class="datos">
+            <b>Escaneá y mirá lo que ya está andando</b>
+            <p class="linea-dato web-dorso"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"></circle><path d="M2.5 12h19M12 2.5c2.6 2.8 3.9 6 3.9 9.5s-1.3 6.7-3.9 9.5c-2.6-2.8-3.9-6-3.9-9.5s1.3-6.7 3.9-9.5z"></path></svg>vazzoler.com.ar</p>
+            <p class="linea-dato"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"></path></svg>11 5797-9172</p>
+            <p class="linea-dato"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21a8 8 0 0 0-16 0"></path><circle cx="12" cy="8" r="4"></circle></svg>Nicolás Vazzoler</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+// Esfera de puntos con los colores del robot, como en la portada de la página pero quieta y en vectores.
+function esfera(svg) {
+  const ns = 'http://www.w3.org/2000/svg';
+  const paleta = ['#DDB35C', '#86B6F2', '#C9C6BA', '#4FCDB4', '#D4EE5E'];
+  const N = 900, oro = Math.PI * (3 - Math.sqrt(5)), R = 216, t = 2000;
+  const cg = Math.cos(0.7), sg = Math.sin(0.7), ci = Math.cos(0.38), si = Math.sin(0.38);
+  for (let i = 0; i < N; i++) {
+    const y0 = 1 - (2 * (i + 0.5)) / N, r = Math.sqrt(1 - y0 * y0), a = i * oro;
+    let x = Math.cos(a) * r, y = y0, z = Math.sin(a) * r;
+    const d = 1 + 0.09 * Math.sin(3 * x + t * 0.0006) * Math.cos(2 * y + t * 0.0004) + 0.05 * Math.sin(4 * z - t * 0.0005);
+    x *= d; y *= d; z *= d;
+    const x1 = x * cg - z * sg, z1 = x * sg + z * cg;
+    const y2 = y * ci - z1 * si, z2 = y * si + z1 * ci;
+    const f = 3 / (3 - z2), cerca = (z2 + 1) / 2, lado = 1.1 + 1.9 * cerca;
+    const p = document.createElementNS(ns, 'rect');
+    p.setAttribute('x', (270 + x1 * R * f).toFixed(1));
+    p.setAttribute('y', (270 + y2 * R * f).toFixed(1));
+    p.setAttribute('width', lado.toFixed(2));
+    p.setAttribute('height', lado.toFixed(2));
+    p.setAttribute('fill', paleta[(i * 7) % 5]);
+    p.setAttribute('opacity', (0.1 + 0.55 * cerca * cerca).toFixed(2));
+    svg.append(p);
+  }
+}
+
+const cara = (id) => {
+  const nodo = document.getElementById(id).content.firstElementChild.cloneNode(true);
+  nodo.querySelectorAll('.esfera').forEach(esfera);
+  return nodo;
+};
+const ventana = (id) => {
+  const v = document.createElement('div');
+  v.className = 'ventana';
+  v.append(cara(id));
+  return v;
+};
+const pagina = (ancho, alto) => {
+  const s = document.createElement('style');
+  s.textContent = `@page { size: ${ancho} ${alto}; margin: 0; }`;
+  document.head.append(s);
+};
+
+const modo = new URLSearchParams(location.search).get('modo') || 'vista';
+
+if (modo === 'imprenta') {
+  // Una cara por hoja: sangrado de 3 mm y marcas de corte en el margen blanco de 5 mm.
+  pagina('121mm', '164mm');
+  for (const id of ['frente', 'dorso']) {
+    const hoja = document.createElement('div');
+    hoja.className = 'hoja hoja-imprenta';
+    hoja.append(cara(id));
+    const corte = { x: [8, 113], y: [8, 156] }; // líneas de corte, en mm desde el borde de la hoja
+    for (const x of corte.x) for (const y0 of [0.5, 160]) hoja.append(marca(x, y0, 0.15, 3.5));
+    for (const y of corte.y) for (const x0 of [0.5, 117]) hoja.append(marca(x0, y, 3.5, 0.15));
+    document.body.append(hoja);
+  }
+} else if (modo === 'a4') {
+  // 4 por hoja al tamaño exacto: la hoja doblada en cuatro marca los cortes.
+  pagina('210mm', '297mm');
+  for (const id of ['frente', 'dorso']) {
+    const hoja = document.createElement('div');
+    hoja.className = 'hoja hoja-a4';
+    for (let i = 0; i < 4; i++) hoja.append(ventana(id));
+    document.body.append(hoja);
+  }
+} else {
+  document.body.className = 'vista';
+  document.body.append(ventana('frente'), ventana('dorso'));
+}
+
+function marca(x, y, ancho, alto) {
+  const m = document.createElement('span');
+  m.className = 'marca-corte';
+  // las verticales se centran en x; las horizontales, en y
+  const vertical = ancho < alto;
+  m.style.left = (vertical ? x - ancho / 2 : x) + 'mm';
+  m.style.top = (vertical ? y : y - alto / 2) + 'mm';
+  m.style.width = ancho + 'mm';
+  m.style.height = alto + 'mm';
+  return m;
+}
+</script>
+</body>
+</html>
