@@ -14,8 +14,8 @@ const { nombre, capturas } = Astro.props;
 const MOVIL = '(max-width: 759px)';
 const anchos = {
   compu: { widths: [480, 720, 960, 1280, 1600], sizes: '(min-width: 1180px) 920px, (min-width: 960px) 78vw, 86vw' },
-  celu: { widths: [240, 400, 600], sizes: '(min-width: 960px) 280px, 30vw' },
-  papel: { widths: [300, 500, 700], sizes: '(min-width: 960px) 420px, 50vw' },
+  celu: { widths: [240, 400, 600], sizes: '(min-width: 1180px) 460px, (min-width: 760px) 40vw, 86vw' },
+  papel: { widths: [300, 500, 700], sizes: '(min-width: 1180px) 360px, (min-width: 760px) 32vw, 64vw' },
 };
 
 // srcset en AVIF y WebP, sin pedir anchos más grandes que la imagen original.
@@ -128,12 +128,14 @@ const fotos = await Promise.all(
     scrollbar-width: none;
     border-radius: 22px;
     overscroll-behavior-x: contain;
+    /* Las medidas de las diapositivas salen del ancho del carril (unidades cqw) */
+    container-type: inline-size;
   }
   .carril::-webkit-scrollbar { display: none; }
 
   /* La diapositiva no ocupa todo el ancho: se ve el borde de la siguiente e invita a deslizar */
   .slide {
-    flex: 0 0 86%;
+    flex: 0 0 86cqw;
     scroll-snap-align: start;
     margin: 0;
     position: relative;
@@ -243,27 +245,20 @@ const fotos = await Promise.all(
     .pista { display: block; }
   }
 
+  /* Compu: las pantallas de compu van en 16:10; las de celu y el ticket, en tarjetas 4:5 del mismo alto,
+     así la fila queda llena en vez de un celular angosto con vacío a los costados. */
   @media (min-width: 760px) {
     .slide { aspect-ratio: 16 / 10; }
+    .celu, .papel { flex-basis: 43cqw; aspect-ratio: 4 / 5; }
     .flecha { display: grid; }
     .sin-recorte .foto { object-fit: cover; object-position: top; padding: 0; }
-    /* Teléfono que asoma desde abajo */
-    .celu .foto {
-      inset: auto;
-      left: 50%;
-      top: 7%;
-      width: auto;
-      height: 93%;
-      transform: translateX(-50%);
-      border-radius: 24px 24px 0 0;
-      box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08), 0 24px 60px rgb(0 0 0 / 0.55);
-    }
     .visor-flecha { top: 50%; bottom: auto; transform: translateY(-50%); }
     .anterior { left: calc(16px + env(safe-area-inset-left, 0px)); }
     .siguiente { left: auto; right: calc(16px + env(safe-area-inset-right, 0px)); }
   }
   @media (min-width: 960px) {
     .carril { gap: 16px; }
-    .slide { flex-basis: 80%; }
+    .slide { flex-basis: 80cqw; }
+    .celu, .papel { flex-basis: 40cqw; }
   }
 </style>

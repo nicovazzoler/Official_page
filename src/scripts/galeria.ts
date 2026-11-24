@@ -8,11 +8,11 @@ for (const galeria of document.querySelectorAll<HTMLElement>('.galeria')) {
   const botones = [...galeria.querySelectorAll<HTMLButtonElement>('.ampliar')];
   const total = slides.length;
 
-  // En el celu cada diapositiva mide menos que el carril, así que el paso se mide entre dos.
-  const paso = () => (total > 1 ? slides[1].offsetLeft - slides[0].offsetLeft : carril.clientWidth);
-  const ir = (i: number) => carril.scrollTo({ left: i * paso(), behavior: quieto ? 'auto' : 'smooth' });
+  // Las diapositivas no miden todas igual (compu, celu, ticket): se navega por la posición de cada una.
+  const posicion = (i: number) => slides[i].offsetLeft - slides[0].offsetLeft;
+  const ir = (i: number) => carril.scrollTo({ left: posicion(i), behavior: quieto ? 'auto' : 'smooth' });
 
-  conectarControles(galeria, carril, botones, total, paso, ir);
+  conectarControles(galeria, carril, botones, total, posicion, ir);
   conectarVisor(galeria, botones, total, ir);
 }
 
@@ -21,7 +21,7 @@ function conectarControles(
   carril: HTMLElement,
   botones: HTMLButtonElement[],
   total: number,
-  paso: () => number,
+  posicion: (i: number) => number,
   ir: (i: number) => void,
 ) {
   if (total < 2) return;
@@ -42,7 +42,16 @@ function conectarControles(
     if (siguiente) siguiente.disabled = i === total - 1;
   };
 
-  carril.addEventListener('scroll', () => marcar(Math.min(total - 1, Math.round(carril.scrollLeft / paso()))), { passive: true });
+  // La actual es la más cercana al borde izquierdo; al llegar al final del carril, la última.
+  const cercana = () => {
+    if (carril.scrollLeft >= carril.scrollWidth - carril.clientWidth - 2) return total - 1;
+    let mejor = 0;
+    for (let i = 1; i < total; i++) {
+      if (Math.abs(posicion(i) - carril.scrollLeft) < Math.abs(posicion(mejor) - carril.scrollLeft)) mejor = i;
+    }
+    return mejor;
+  };
+  carril.addEventListener('scroll', () => marcar(cercana()), { passive: true });
   puntos.forEach((p, i) => p.addEventListener('click', () => ir(i)));
   anterior?.addEventListener('click', () => ir(Math.max(0, actual - 1)));
   siguiente?.addEventListener('click', () => ir(Math.min(total - 1, actual + 1)));
