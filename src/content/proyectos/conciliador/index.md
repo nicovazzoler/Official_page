@@ -13,17 +13,21 @@ datos:
     valor: Quedan en tu compu, no salen de ahí
 capturas:
   - archivo: ./gastos.webp
+    movil: ./gastos-movil.webp
     epigrafe: Gastos del mes
     alt: 'Gastos del mes en la computadora: lo gastado, lo que hay que atender y en qué se fue'
   - archivo: ./revisar.webp
+    movil: ./revisar-movil.webp
     tipo: celu
     epigrafe: Revisar un gasto
     alt: Revisar un gasto pendiente en el celular
   - archivo: ./movimientos.webp
+    movil: ./movimientos-movil.webp
     tipo: celu
     epigrafe: Movimientos
     alt: Movimientos del mes con buscador y filtros
   - archivo: ./inversiones.webp
+    movil: ./inversiones-movil.webp
     tipo: celu
     epigrafe: Inversiones
     alt: Cartera de inversiones con ganancia por posición

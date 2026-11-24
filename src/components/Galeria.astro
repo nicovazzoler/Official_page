@@ -1,57 +1,117 @@
 ---
-import { Picture } from 'astro:assets';
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import type { CollectionEntry } from 'astro:content';
 
-// Capturas de un proyecto que se pasan con el dedo (scroll-snap); puntos y flechas para el mouse.
+// Capturas de un proyecto que se pasan con el dedo (scroll-snap) y se abren en grande al tocarlas.
+// En el celu cada diapositiva es 4:5 y muestra el recorte de la captura; en compu, 16:10 y la pantalla entera.
 interface Props {
   nombre: string;
   capturas: CollectionEntry<'proyectos'>['data']['capturas'];
 }
 const { nombre, capturas } = Astro.props;
 
-// Ancho en pantalla de cada tipo, para que el navegador baje el tamaño justo.
-const tamanos = {
+const MOVIL = '(max-width: 759px)';
+const anchos = {
   compu: { widths: [480, 720, 960, 1280, 1600], sizes: '(min-width: 1180px) 920px, (min-width: 960px) 78vw, 86vw' },
   celu: { widths: [240, 400, 600], sizes: '(min-width: 960px) 280px, 30vw' },
   papel: { widths: [300, 500, 700], sizes: '(min-width: 960px) 420px, 50vw' },
 };
+
+// srcset en AVIF y WebP, sin pedir anchos más grandes que la imagen original.
+async function variantes(src: ImageMetadata, widths: number[]) {
+  const posibles = widths.filter((w) => w <= src.width);
+  const usar = posibles.length ? posibles : [src.width];
+  const [avif, webp] = await Promise.all(
+    (['avif', 'webp'] as const).map((format) => getImage({ src, widths: usar, format })),
+  );
+  return { avif: avif.srcSet.attribute, webp: webp.srcSet.attribute, src: webp.src };
+}
+
+const fotos = await Promise.all(
+  capturas.map(async (c) => {
+    const { widths, sizes } = anchos[c.tipo];
+    const grande = await getImage({ src: c.archivo, width: Math.min(1600, c.archivo.width), format: 'webp' });
+    return {
+      ...c,
+      sizes,
+      escritorio: await variantes(c.archivo, widths),
+      movil: c.movil ? await variantes(c.movil, [400, 600, 900]) : null,
+      grande: grande.src,
+    };
+  }),
+);
 ---
 
 <div class="galeria">
   <div class="carril" tabindex="0" aria-label={`Capturas de ${nombre}`}>
     {
-      capturas.map((c) => (
-        <figure class:list={['slide', c.tipo]}>
-          <Picture
-            src={c.archivo}
-            alt={c.alt}
-            formats={['avif']}
-            fallbackFormat="webp"
-            widths={tamanos[c.tipo].widths}
-            sizes={tamanos[c.tipo].sizes}
-            class="foto"
-            loading="lazy"
-          />
-          <figcaption>{c.epigrafe}</figcaption>
+      fotos.map((f, i) => (
+        <figure class:list={['slide', f.tipo, !f.movil && 'sin-recorte']}>
+          <button class="ampliar" type="button" data-indice={i} data-grande={f.grande} data-epigrafe={f.epigrafe} aria-label={`Ver en grande: ${f.epigrafe}`}>
+            <picture>
+              {f.movil && <source media={MOVIL} type="image/avif" srcset={f.movil.avif} sizes="86vw" />}
+              {f.movil && <source media={MOVIL} type="image/webp" srcset={f.movil.webp} sizes="86vw" />}
+              <source type="image/avif" srcset={f.escritorio.avif} sizes={f.sizes} />
+              <img
+                class="foto"
+                src={f.escritorio.src}
+                srcset={f.escritorio.webp}
+                sizes={f.sizes}
+                alt={f.alt}
+                width={f.archivo.width}
+                height={f.archivo.height}
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
+            <span class="lupa" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" /></svg>
+            </span>
+          </button>
+          <figcaption class="sr">{f.epigrafe}</figcaption>
         </figure>
       ))
     }
   </div>
 
   {
-    capturas.length > 1 && (
+    fotos.length > 1 && (
       <div class="control">
-        <button class="flecha" type="button" data-ir="-1" aria-label="Captura anterior" disabled>←</button>
-        <div class="puntos">
-          {capturas.map((_, i) => (
-            <button class="punto" type="button" data-punto={i} aria-label={`Ver captura ${i + 1}`} aria-current={i === 0 ? 'true' : 'false'} />
-          ))}
+        <p class="epigrafe" aria-hidden="true">
+          <span class="nombre-captura">{fotos[0].epigrafe}</span>
+          <span class="contador">1 / {fotos.length}</span>
+        </p>
+        <div class="navegacion">
+          <button class="flecha" type="button" data-ir="-1" aria-label="Captura anterior" disabled>←</button>
+          <div class="puntos">
+            {fotos.map((_, i) => (
+              <button class="punto" type="button" data-punto={i} aria-label={`Ver captura ${i + 1}`} aria-current={i === 0 ? 'true' : 'false'} />
+            ))}
+          </div>
+          <button class="flecha" type="button" data-ir="1" aria-label="Captura siguiente">→</button>
         </div>
-        <button class="flecha" type="button" data-ir="1" aria-label="Captura siguiente">→</button>
-        <span class="contador">1 / {capturas.length}</span>
       </div>
     )
   }
+
+  <!-- Visor a pantalla completa; en el celu se puede pellizcar para hacer zoom -->
+  <dialog class="visor" aria-label={`Capturas de ${nombre} en grande`}>
+    <figure>
+      <img class="visor-foto" alt="" />
+      <figcaption class="visor-epigrafe"></figcaption>
+    </figure>
+    <button class="cerrar" type="button" aria-label="Cerrar">✕</button>
+    {
+      fotos.length > 1 && (
+        <>
+          <button class="visor-flecha anterior" type="button" data-visor="-1" aria-label="Captura anterior">←</button>
+          <button class="visor-flecha siguiente" type="button" data-visor="1" aria-label="Captura siguiente">→</button>
+        </>
+      )
+    }
+    <p class="pista" aria-hidden="true">Pellizcá para ampliar</p>
+  </dialog>
 </div>
 
 <script>
@@ -77,7 +137,7 @@ const tamanos = {
     scroll-snap-align: start;
     margin: 0;
     position: relative;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 4 / 5;
     max-width: 100%;
     border-radius: 22px;
     overflow: hidden;
@@ -85,65 +145,122 @@ const tamanos = {
       radial-gradient(80% 70% at 70% 20%, color-mix(in srgb, var(--tinte) 30%, transparent), transparent 70%),
       linear-gradient(160deg, #0D1628, #070C18);
   }
-  .slide :global(.foto) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; }
-  /* Teléfono que asoma desde abajo */
-  .celu :global(.foto) {
-    inset: auto;
-    left: 50%;
-    top: 7%;
-    width: auto;
-    height: 93%;
-    transform: translateX(-50%);
-    border-radius: 24px 24px 0 0;
-    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08), 0 24px 60px rgb(0 0 0 / 0.55);
+  .ampliar {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: zoom-in;
   }
+  .ampliar:focus-visible { outline: 2px solid var(--turquesa); outline-offset: -4px; border-radius: 22px; }
+  .foto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  /* Sin recorte (pantallas con letra grande): entera, con el fondo de la diapositiva alrededor */
+  .sin-recorte .foto { object-fit: contain; object-position: center; padding: 0 10px; }
   /* Ticket apoyado, apenas girado */
-  .papel :global(.foto) {
+  .papel .foto {
     inset: auto;
     left: 50%;
     top: 7%;
     width: auto;
     height: 86%;
+    padding: 0;
     transform: translateX(-50%) rotate(-2deg);
     border-radius: 4px;
     box-shadow: 0 24px 60px rgb(0 0 0 / 0.55);
   }
-  figcaption {
+  .lupa {
     position: absolute;
-    left: 12px;
+    right: 12px;
     bottom: 12px;
-    padding: 6px 9px;
-    border-radius: 6px;
-    font: 12px / 1 var(--f-mono);
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
     color: var(--texto);
     background: rgb(3 6 12 / 0.72);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
+    transition: transform 0.2s ease;
   }
+  .ampliar:hover .lupa { transform: scale(1.1); }
 
-  .control { display: flex; align-items: center; gap: 14px; }
+  .control { display: grid; gap: 6px; }
+  .epigrafe { display: flex; justify-content: space-between; gap: 12px; font: 13px var(--f-mono); }
+  .nombre-captura { color: var(--texto); }
+  .contador { color: var(--tenue); flex: none; }
+  .navegacion { display: flex; align-items: center; gap: 14px; }
   .puntos { display: flex; gap: 4px; flex-wrap: wrap; }
   .punto { display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; background: none; cursor: pointer; }
   .punto::before { content: ''; width: 8px; height: 8px; border-radius: 99px; background: var(--tenue); transition: width 0.3s ease, background 0.3s ease; }
   .punto[aria-current='true']::before { width: 22px; background: var(--tinte); }
-  .contador { margin-left: auto; font: 13px var(--f-mono); color: var(--tenue); }
-  .flecha {
-    display: none;
+  .flecha, .cerrar, .visor-flecha {
+    display: grid;
     place-items: center;
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     border: 1px solid var(--linea);
-    background: transparent;
+    background: rgb(3 6 12 / 0.6);
     color: var(--texto);
+    font-size: 16px;
     cursor: pointer;
     transition: border-color 0.2s, background 0.2s;
   }
-  .flecha:hover { border-color: var(--tinte); background: color-mix(in srgb, var(--tinte) 10%, transparent); }
-  .flecha:disabled { opacity: 0.3; cursor: default; }
+  .flecha { display: none; }
+  .flecha:hover, .visor-flecha:hover, .cerrar:hover { border-color: var(--tinte); background: color-mix(in srgb, var(--tinte) 14%, rgb(3 6 12)); }
+  .flecha:disabled, .visor-flecha:disabled { opacity: 0.3; cursor: default; }
+
+  /* Visor */
+  .visor {
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: rgb(3 4 5 / 0.95);
+    color: var(--texto);
+  }
+  .visor[open] { display: grid; place-items: center; }
+  .visor::backdrop { background: rgb(0 0 0 / 0.6); }
+  :global(html:has(.visor[open])) { overflow: hidden; }
+  .visor figure { display: grid; justify-items: center; gap: 12px; margin: 0; padding: 64px 16px 96px; max-width: 100%; }
+  .visor-foto { display: block; max-width: min(100%, 1600px); max-height: calc(100dvh - 180px); width: auto; height: auto; border-radius: 10px; }
+  .visor-epigrafe { font: 13px var(--f-mono); color: var(--suave); text-align: center; }
+  .cerrar { position: fixed; top: calc(14px + env(safe-area-inset-top, 0px)); right: calc(14px + env(safe-area-inset-right, 0px)); }
+  .visor-flecha { position: fixed; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
+  .anterior { left: calc(50% - 56px); }
+  .siguiente { left: calc(50% + 12px); }
+  .pista { display: none; position: fixed; top: calc(26px + env(safe-area-inset-top, 0px)); left: 16px; font: 12px var(--f-mono); color: var(--tenue); }
+  @media (pointer: coarse) {
+    .pista { display: block; }
+  }
 
   @media (min-width: 760px) {
+    .slide { aspect-ratio: 16 / 10; }
     .flecha { display: grid; }
+    .sin-recorte .foto { object-fit: cover; object-position: top; padding: 0; }
+    /* Teléfono que asoma desde abajo */
+    .celu .foto {
+      inset: auto;
+      left: 50%;
+      top: 7%;
+      width: auto;
+      height: 93%;
+      transform: translateX(-50%);
+      border-radius: 24px 24px 0 0;
+      box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08), 0 24px 60px rgb(0 0 0 / 0.55);
+    }
+    .visor-flecha { top: 50%; bottom: auto; transform: translateY(-50%); }
+    .anterior { left: calc(16px + env(safe-area-inset-left, 0px)); }
+    .siguiente { left: auto; right: calc(16px + env(safe-area-inset-right, 0px)); }
   }
   @media (min-width: 960px) {
     .carril { gap: 16px; }

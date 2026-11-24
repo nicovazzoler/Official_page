@@ -17,6 +17,8 @@ const proyectos = defineCollection({
         .array(
           z.object({
             archivo: image(),
+            // Recorte 4:5 para el celu, donde la pantalla entera no se lee. Sin recorte, se muestra entera.
+            movil: image().optional(),
             // compu llena la diapositiva; celu asoma como un teléfono; papel es un ticket apoyado
             tipo: z.enum(['compu', 'celu', 'papel']).default('compu'),
             epigrafe: z.string(),
