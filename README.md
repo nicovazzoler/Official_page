@@ -65,3 +65,10 @@ Las capturas se optimizan solas al construir (AVIF y WebP en varios tamaños).
 ## Cambiar datos de contacto
 
 Todo está en `src/datos/sitio.ts`: el número y el mensaje de WhatsApp, el mail, LinkedIn y si se muestra "Tomando proyectos nuevos" en el pie.
+
+## Publicación
+
+La página está en Cloudflare (Worker `official-page`, dominio `vazzoler.com.ar`). Cada push a la rama de
+producción dispara solo `npm run build` y `npx wrangler deploy`, que sube `dist/` tal cual
+(la configuración está en `wrangler.jsonc`). Si la compilación falla, la versión anterior sigue online
+y el error queda en Deployments, en el panel de Cloudflare.
