@@ -10,7 +10,7 @@ const salida = (nombre) => path.join(__dirname, nombre);
   const navegador = await chromium.launch();
   const pagina = await navegador.newPage();
 
-  for (const [modo, archivo] of [['imprenta', 'folleto-a6-imprenta.pdf'], ['a4', 'folleto-a4-4-por-hoja.pdf']]) {
+  for (const [modo, archivo] of [['imprenta', 'folleto-a6-imprenta.pdf'], ['a4', 'folleto-a6-4-en-hoja-a4.pdf']]) {
     await pagina.goto(`${html}?modo=${modo}`);
     await pagina.evaluate(() => document.fonts.ready);
     await pagina.pdf({ path: salida(archivo), preferCSSPageSize: true, printBackground: true });
