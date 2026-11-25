@@ -7,8 +7,9 @@
   Folleto A6 (105 × 148 mm). El diseño es el del canvas "Folleto Vazzoler" (artboard oscuro, 559 × 794 px)
   y acá se escala a A6, con 3 mm de sangrado (111 × 154 mm). El script del final lo acomoda según ?modo=:
     vista     recortado, para mirar en pantalla (por defecto)
-    imprenta  con sangrado y marcas de corte
-    a4        4 en una hoja A4, al tamaño exacto
+    imprenta     1 folleto con sangrado y marcas de corte
+    a4-imprenta  2 en una A4 apaisada, con sangrado y marcas de corte
+    a4           4 en una hoja A4, al tamaño exacto y sin sangrado (para imprimir en casa)
   generar.cjs abre este archivo con cada modo y guarda los PDF.
 -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&amp;family=Inter:wght@400;500;600&amp;display=swap">
@@ -32,6 +33,7 @@ body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 .hoja-imprenta { width: 121mm; height: 164mm; background: #FFFFFF; }
 .hoja-imprenta .cara { position: absolute; left: 5mm; top: 5mm; }
 .marca-corte { position: absolute; background: #000000; }
+.hoja-a4-imprenta { width: 297mm; height: 210mm; background: #FFFFFF; }
 .hoja-a4 { width: 210mm; height: 297mm; background: #FFFFFF; display: grid; grid-template-columns: 105mm 105mm; grid-auto-rows: 148mm; align-content: start; }
 </style>
 </head>
@@ -187,8 +189,28 @@ if (modo === 'imprenta') {
   for (const x of corte.x) for (const y0 of [0.5, 160]) hoja.append(marca(x, y0, 0.15, 3.5));
   for (const y of corte.y) for (const x0 of [0.5, 117]) hoja.append(marca(x0, y, 3.5, 0.15));
   document.body.append(hoja);
+} else if (modo === 'a4-imprenta') {
+  // A4 apaisada con 2 folletos, cada uno con su sangrado y 4 mm de aire entre los dos.
+  // Con sangrado no entran 4 en una A4 (harían falta 222 × 308 mm).
+  pagina('297mm', '210mm');
+  const hoja = document.createElement('div');
+  hoja.className = 'hoja hoja-a4-imprenta';
+  const izquierda = 35.5, arriba = 28, separacion = 4;
+  const corteX = [];
+  for (let i = 0; i < 2; i++) {
+    const c = folleto();
+    const x = izquierda + i * (111 + separacion);
+    c.style.cssText = `position: absolute; left: ${x}mm; top: ${arriba}mm`;
+    hoja.append(c);
+    corteX.push(x + 3, x + 108);
+  }
+  const corteY = [arriba + 3, arriba + 151];
+  // Las marcas quedan afuera del sangrado: arriba y abajo de cada corte vertical, a los costados de los horizontales.
+  for (const x of corteX) for (const y0 of [arriba - 8, arriba + 156]) hoja.append(marca(x, y0, 0.15, 6));
+  for (const y of corteY) for (const x0 of [izquierda - 9, izquierda + 226 + 3]) hoja.append(marca(x0, y, 6, 0.15));
+  document.body.append(hoja);
 } else if (modo === 'a4') {
-  // 4 por hoja al tamaño exacto: la hoja doblada en cuatro marca los cortes.
+  // 4 por hoja al tamaño exacto, sin sangrado: para imprimir en casa; la hoja doblada en cuatro marca los cortes.
   pagina('210mm', '297mm');
   const hoja = document.createElement('div');
   hoja.className = 'hoja hoja-a4';
