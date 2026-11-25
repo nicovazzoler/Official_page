@@ -10,6 +10,8 @@
     imprenta     1 folleto con sangrado y marcas de corte
     a4-imprenta  2 en una A4 apaisada, con sangrado y marcas de corte
     a4           4 en una hoja A4, al tamaño exacto y sin sangrado (para imprimir en casa)
+    borde        1 folleto con borde blanco de 5 mm: no necesita sangrado
+    a4-borde     4 con borde blanco en una hoja A4
   generar.cjs abre este archivo con cada modo y guarda los PDF.
 -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&amp;family=Inter:wght@400;500;600&amp;display=swap">
@@ -34,6 +36,15 @@ body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 .hoja-imprenta .cara { position: absolute; left: 5mm; top: 5mm; }
 .marca-corte { position: absolute; background: #000000; }
 .hoja-a4-imprenta { width: 297mm; height: 210mm; background: #FFFFFF; }
+
+/* Versión con borde blanco: el diseño va en un panel de 95 mm de ancho dentro del A6, sin sangrado.
+   Escala 0,642317 = 95 mm / 559 px; el alto queda en 134,9 mm, centrado. */
+.borde { position: relative; width: 105mm; height: 148mm; background: #FFFFFF; overflow: hidden; }
+.borde .panel { position: absolute; left: 5mm; top: calc((148mm - 794px * 0.642317) / 2); width: 95mm; height: calc(794px * 0.642317); border-radius: 3mm; overflow: hidden; background: #0B2530; }
+.borde .diseno { top: 0; left: 0; transform: scale(0.642317); }
+.hoja-a4-borde { width: 210mm; height: 297mm; background: #FFFFFF; display: grid; grid-template-columns: 105mm 105mm; grid-auto-rows: 148mm; align-content: start; }
+.vista-borde { background: #D9DDE3; padding: 10mm; }
+.vista-borde .borde { box-shadow: 0 1mm 6mm rgb(0 0 0 / 0.25); }
 .hoja-a4 { width: 210mm; height: 297mm; background: #FFFFFF; display: grid; grid-template-columns: 105mm 105mm; grid-auto-rows: 148mm; align-content: start; }
 </style>
 </head>
@@ -177,9 +188,33 @@ function marca(x, y, ancho, alto) {
   return m;
 }
 
+// El mismo diseño dentro de un A6 blanco: no necesita sangrado porque el corte cae en el blanco.
+const conBorde = () => {
+  const panel = document.createElement('div');
+  panel.className = 'panel';
+  panel.append(folleto().querySelector('.diseno'));
+  const b = document.createElement('div');
+  b.className = 'borde';
+  b.append(panel);
+  return b;
+};
+
 const modo = new URLSearchParams(location.search).get('modo') || 'vista';
 
-if (modo === 'imprenta') {
+if (modo === 'borde') {
+  pagina('105mm', '148mm');
+  document.body.append(conBorde());
+} else if (modo === 'a4-borde') {
+  // 4 por A4: se corta por la mitad de las franjas blancas.
+  pagina('210mm', '297mm');
+  const hoja = document.createElement('div');
+  hoja.className = 'hoja hoja-a4-borde';
+  for (let i = 0; i < 4; i++) hoja.append(conBorde());
+  document.body.append(hoja);
+} else if (modo === 'vista-borde') {
+  document.body.className = 'vista-borde';
+  document.body.append(conBorde());
+} else if (modo === 'imprenta') {
   // Sangrado de 3 mm y marcas de corte en el margen blanco de 5 mm.
   pagina('121mm', '164mm');
   const hoja = document.createElement('div');

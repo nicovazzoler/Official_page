@@ -14,6 +14,8 @@ const salida = (nombre) => path.join(__dirname, nombre);
     ['imprenta', 'folleto-a6-imprenta.pdf'],
     ['a4-imprenta', 'folleto-a6-2-en-hoja-a4-imprenta.pdf'],
     ['a4', 'folleto-a6-4-en-hoja-a4.pdf'],
+    ['borde', 'folleto-a6-borde.pdf'],
+    ['a4-borde', 'folleto-a6-borde-4-en-hoja-a4.pdf'],
   ];
   for (const [modo, archivo] of pdfs) {
     await pagina.goto(`${html}?modo=${modo}`);
@@ -28,5 +30,9 @@ const salida = (nombre) => path.join(__dirname, nombre);
   await vista.evaluate(() => document.fonts.ready);
   await vista.locator('.ventana').screenshot({ path: salida('vista.png') });
   console.log('vista.png');
+  await vista.goto(`${html}?modo=vista-borde`);
+  await vista.evaluate(() => document.fonts.ready);
+  await vista.locator('.borde').screenshot({ path: salida('vista-borde.png') });
+  console.log('vista-borde.png');
   await navegador.close();
 })();
