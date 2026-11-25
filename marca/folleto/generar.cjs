@@ -14,6 +14,8 @@ const salida = (nombre) => path.join(__dirname, nombre);
     ['imprenta', 'folleto-a6-imprenta.pdf'],
     ['a4-imprenta', 'folleto-a6-2-en-hoja-a4-imprenta.pdf'],
     ['a4', 'folleto-a6-4-en-hoja-a4.pdf'],
+    ['grande', 'folleto-grande-imprenta.pdf'],
+    ['a4-grande', 'folleto-grande-2-en-hoja-a4-imprenta.pdf'],
     ['borde', 'folleto-a6-borde.pdf'],
     ['a4-borde', 'folleto-a6-borde-4-en-hoja-a4.pdf'],
   ];
@@ -34,5 +36,9 @@ const salida = (nombre) => path.join(__dirname, nombre);
   await vista.evaluate(() => document.fonts.ready);
   await vista.locator('.borde').screenshot({ path: salida('vista-borde.png') });
   console.log('vista-borde.png');
+  await vista.goto(`${html}?modo=vista-grande`);
+  await vista.evaluate(() => document.fonts.ready);
+  await vista.locator('.ventana').screenshot({ path: salida('vista-grande.png') });
+  console.log('vista-grande.png');
   await navegador.close();
 })();
